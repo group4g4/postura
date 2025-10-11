@@ -228,7 +228,6 @@ function showProcessing(show){
 function setResult(html){ resultDiv.innerHTML = html; }
 function clearResult(){ resultDiv.innerHTML = ''; angleValDiv.textContent=''; remarkDiv.textContent=''; remarkDiv.className=''; }
 
-/* map mouse event to canvas natural pixel coords (handles CSS scaling) */
 function getCanvasCoords(evt){
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -291,8 +290,29 @@ function drawCanvas(){
 
       // draw the dashed baseline for saved attempt
       if(s.baseline){
+        // ********* UPDATED: flip baseline direction and scale length to 10% of canvas width *********
+        // compute dx/dy for saved attempt
+        const tragus = s.points[0];
+        const c7 = s.points[1];
+        const dx = c7.x - tragus.x;
+        const dy = c7.y - tragus.y;
+        const baselineLength = Math.max(10, canvas.width * 0.1); // 10% of canvas width, min 10px
+
         ctx.setLineDash([6,6]); ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(s.baseline.start.x, s.baseline.start.y); ctx.lineTo(s.baseline.end.x, s.baseline.end.y); ctx.stroke();
+        ctx.beginPath();
+        // draw baseline anchored at C7, extend left or right depending on slope direction
+        ctx.moveTo(c7.x, c7.y);
+        if (dx > 0 && dy > 0) {
+          // line slopes down left->right -> baseline to the left
+          ctx.lineTo(c7.x - baselineLength, c7.y);
+        } else if (dx < 0 && dy > 0) {
+          // line slopes down right->left -> baseline to the right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        } else {
+          // fallback (flat or upward): draw to the right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        }
+        ctx.stroke();
         ctx.setLineDash([]);
       }
     }
@@ -311,14 +331,29 @@ function drawCanvas(){
       ctx.lineTo(points[1].x, points[1].y);
       ctx.stroke();
 
-      // draw baseline if currentAttempt has baseline
+      // draw baseline if currentAttempt has baseline (for in-progress visual)
       if(currentAttempt && currentAttempt.baseline){
+        // ********* UPDATED: draw baseline anchored at C7 and auto-flip with 10% width *********
+        const tragus = points[0];
+        const c7 = points[1];
+        const dx = c7.x - tragus.x;
+        const dy = c7.y - tragus.y;
+        const baselineLength = Math.max(10, canvas.width * 0.1); // 10% width, min 10px
+
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
         ctx.setLineDash([6,6]); // dashed
         ctx.beginPath();
-        ctx.moveTo(currentAttempt.baseline.start.x, currentAttempt.baseline.start.y);
-        ctx.lineTo(currentAttempt.baseline.end.x, currentAttempt.baseline.end.y);
+        ctx.moveTo(c7.x, c7.y);
+        if (dx > 0 && dy > 0) {
+          // slopes down left->right -> baseline to left
+          ctx.lineTo(c7.x - baselineLength, c7.y);
+        } else if (dx < 0 && dy > 0) {
+          // slopes down right->left -> baseline to right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        } else {
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        }
         ctx.stroke();
         ctx.setLineDash([]);
       }
@@ -491,11 +526,23 @@ canvas.addEventListener('click', (e)=>{
     // If angleLeft smaller -> baseline extends left from the lower point, else right.
     const lower = (points[0].y > points[1].y) ? points[0] : points[1];
     let baselineStart = {x: lower.x, y: lower.y}, baselineEnd;
-    // Extend the baseline sufficiently (to edges of canvas) in chosen direction
-    if(angleLeft <= angleRight){
-      baselineEnd = {x: 0, y: lower.y}; // extend left edge
+    // ********* UPDATED: use auto-scaled baseline length (10% canvas width) and anchor at C7 *********
+    const dx2 = points[1].x - points[0].x;
+    const dy2 = points[1].y - points[0].y;
+    const baselineLength = Math.max(10, canvas.width * 0.1); // 10% width, minimum 10px
+    // Anchor baseline at C7 (points[1]) and extend left/right based on slope direction
+    if (dx2 > 0 && dy2 > 0) {
+      // downward left-to-right -> extend left
+      baselineStart = { x: points[1].x - baselineLength, y: points[1].y };
+      baselineEnd = { x: points[1].x, y: points[1].y };
+    } else if (dx2 < 0 && dy2 > 0) {
+      // downward right-to-left -> extend right
+      baselineStart = { x: points[1].x, y: points[1].y };
+      baselineEnd = { x: points[1].x + baselineLength, y: points[1].y };
     } else {
-      baselineEnd = {x: canvas.width, y: lower.y}; // extend right edge
+      // fallback: extend right
+      baselineStart = { x: points[1].x, y: points[1].y };
+      baselineEnd = { x: points[1].x + baselineLength, y: points[1].y };
     }
 
     // draw dashed baseline
