@@ -3,87 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POSTURA</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+  <title>Postura | Terms & Conditions</title>
+  <link rel="icon" href="logo.png" type="image/png">
   <style>
     body {
-      margin: 0;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #f9d423, #ff4e50);
-      height: 100vh;
+      background: linear-gradient(135deg, #fffbea, #fff5d7);
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      color: #222;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      width: 90%;
+      max-width: 600px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
 
-    img {
-      width: 140px;
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 20px;
     }
 
+    .logo img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
     h1 {
-      font-size: 2.2rem;
-      margin: 10px 0;
-      letter-spacing: 1px;
+      color: #b48a00;
+      margin-bottom: 10px;
     }
 
     p {
-      max-width: 400px;
-      margin: 0 auto 40px;
-      font-size: 1rem;
-      color: #333;
+      text-align: justify;
+      line-height: 1.6;
+      color: #444;
     }
 
-    .btn {
-      background-color: #222;
-      color: #fff;
-      padding: 14px 28px;
+    .checkbox {
+      margin: 20px 0;
+    }
+
+    button {
+      background-color: #fbc02d;
       border: none;
-      border-radius: 50px;
-      font-size: 1rem;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
     }
 
-    .btn:hover {
-      background-color: #444;
-      transform: scale(1.05);
+    button:hover {
+      background-color: #f9a825;
     }
 
-    footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9rem;
-      color: #333;
-    }
-
-    footer a {
-      color: #222;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+    button:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="POSTURA Logo" />
-  <h1>Welcome to POSTURA</h1>
-  <p>Your intelligent companion for posture tracking and ergonomic wellness.</p>
-  <a href="main.html" class="btn">Enter POSTURA</a>
-
-  <footer>
+  <div class="container">
+    <div class="logo">
+      <img src="logo.png" alt="Postura Logo">
+      <h1>POSTURA</h1>
+    </div>
+    <h2>Terms and Conditions</h2>
     <p>
-      &copy; 2025 POSTURA |
-      <a href="terms.html">Terms &amp; Conditions</a>
+      Welcome to Postura! Before proceeding, please read and agree to the following terms:
+      <br><br>
+      • Postura is a posture analysis tool intended for educational and personal use.<br>
+      • Any results or measurements are for guidance only and not for medical diagnosis.<br>
+      • Uploaded photos remain in your local browser and are not stored on our servers.<br>
+      • By continuing, you agree to use this tool responsibly and respect data privacy.
     </p>
-  </footer>
+
+    <div class="checkbox">
+      <input type="checkbox" id="agreeCheckbox"> 
+      <label for="agreeCheckbox"> I have read and agree to the Terms and Conditions.</label>
+    </div>
+
+    <button id="enterBtn" disabled>Enter Postura</button>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById('agreeCheckbox');
+    const button = document.getElementById('enterBtn');
+
+    checkbox.addEventListener('change', () => {
+      button.disabled = !checkbox.checked;
+    });
+
+    button.addEventListener('click', () => {
+      localStorage.setItem('agreedToTerms', 'true');
+      window.location.href = 'main.html';
+    });
+  </script>
 </body>
 </html>
