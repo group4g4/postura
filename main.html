@@ -602,7 +602,7 @@ saveAttemptBtn.addEventListener('click', ()=>{
   left.innerHTML = `<div><strong>Attempt ${idx+1}</strong>: ${currentAttempt.angle}°</div><div style="font-size:0.95rem;margin-top:6px;color:#555">${currentAttempt.remarkText}</div>`;
   const tag = document.createElement('div');
   tag.className = 'historyTag';
-  tag.textContent = currentAttempt.remarkText.includes('healthy') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
+  tag.textContent = currentAttempt.remarkText.includes('Posture') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
   // color tag
   if(currentAttempt.remarkClass === 'good') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
   else if(currentAttempt.remarkClass === 'atrisk') tag.style.background = '#fff8e1', tag.style.color = '#ff9800';
@@ -784,5 +784,6 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
