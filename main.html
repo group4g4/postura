@@ -769,5 +769,19 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   loadHistory();
 })();
 </script>
+  
+<script>
+  // Redirect user to main.html after logging out
+  document.addEventListener("DOMContentLoaded", function() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function() {
+        window.location.href = "main.html";
+      });
+    }
+  });
+</script>
+  
 </body>
 </html>
+
