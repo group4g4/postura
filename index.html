@@ -3,25 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to POSTURA</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>POSTURA</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f9d423, #ff4e50);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #222;
+      text-align: center;
+    }
+
+    img {
+      width: 140px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 10px 0;
+      letter-spacing: 1px;
+    }
+
+    p {
+      max-width: 400px;
+      margin: 0 auto 40px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .btn {
+      background-color: #222;
+      color: #fff;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+      background-color: #444;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    footer a {
+      color: #222;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col justify-center items-center min-h-screen text-gray-800 font-sans">
-  <div class="text-center max-w-xl p-8 bg-white shadow-2xl rounded-3xl">
-    <h1 class="text-4xl font-bold mb-4 text-blue-700">Welcome to <span class="text-blue-600">POSTURA</span></h1>
-    <p class="text-lg mb-6">
-      An AI-powered posture analysis system that helps you improve your stance and awareness through real-time detection and feedback.
-    </p>
-    <a href="terms.html" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">
-      Continue
-    </a>
-  </div>
+<body>
+  <img src="logo.png" alt="POSTURA Logo" />
+  <h1>Welcome to POSTURA</h1>
+  <p>Your intelligent companion for posture tracking and ergonomic wellness.</p>
+  <a href="main.html" class="btn">Enter POSTURA</a>
+
   <footer>
-  <p>&copy; 2025 POSTURA | 
-    <a href="terms.html" target="_blank">Terms & Conditions</a> | 
-    <a href="disclaimer.html" target="_blank">Disclaimer</a>
-  </p>
-</footer>
+    <p>
+      &copy; 2025 POSTURA |
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </p>
+  </footer>
 </body>
 </html>
-
