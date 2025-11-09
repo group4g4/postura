@@ -171,7 +171,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
 
-<script defer>
+<script>
 /* ======= App state & elements ======= */
 const startBtn = document.getElementById('startBtn');
 const frontPage = document.getElementById('frontPage');
@@ -403,94 +403,31 @@ upload.addEventListener('change', e=>{
 
 /* ======= Camera functions ======= */
 function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
-const cameraEl = document.getElementById('camera');
-const overlayCanvas = document.getElementById('overlayCanvas');
-const overlayCtx = overlayCanvas.getContext('2d');
-const snapshotCanvas = document.getElementById('snapshotCanvas');
-const snapCtx = snapshotCanvas.getContext('2d');
 
-let stream;
-let useBackCamera = true;
-
-const overlayImg = new Image();
-overlayImg.src = 'sideview-outline.png';
-
-document.getElementById('openCameraBtn').addEventListener('click', async () => {
-  try {
-    const constraints = { video: { facingMode: useBackCamera ? 'environment' : 'user' } };
+openCameraBtn.addEventListener('click', async ()=>{
+  try{
+    const constraints = isMobile() ? { video: { facingMode: useBackCamera ? { exact: "environment" } : "user" } } : { video: true };
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     cameraEl.srcObject = stream;
-
-    document.getElementById('snapBtn').style.display = 'inline-block';
-    document.getElementById('closeCameraBtn').style.display = 'inline-block';
-    document.getElementById('flipCameraBtn').style.display = 'inline-block';
-    document.getElementById('openCameraBtn').style.display = 'none';
-
-    cameraEl.addEventListener('loadedmetadata', () => {
-      overlayCanvas.width = cameraEl.videoWidth;
-      overlayCanvas.height = cameraEl.videoHeight;
-    });
-
-    function drawOverlay() {
-      overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-
-      if (overlayImg.complete) {
-        // Maintain aspect ratio
-        const videoRatio = cameraEl.videoWidth / cameraEl.videoHeight;
-        const imgRatio = overlayImg.width / overlayImg.height;
-
-        let drawWidth, drawHeight;
-        if (videoRatio > imgRatio) {
-          drawHeight = overlayCanvas.height;
-          drawWidth = imgRatio * drawHeight;
-        } else {
-          drawWidth = overlayCanvas.width;
-          drawHeight = drawWidth / imgRatio;
-        }
-
-        const offsetX = (overlayCanvas.width - drawWidth) / 2;
-        const offsetY = (overlayCanvas.height - drawHeight) / 2;
-
-        overlayCtx.drawImage(overlayImg, offsetX, offsetY, drawWidth, drawHeight);
-      }
-
-      requestAnimationFrame(drawOverlay);
-    }
-    drawOverlay();
-
-  } catch (err) {
-    alert('Camera not available or permission denied.');
-    console.error(err);
+    cameraEl.style.display = 'block';
+    snapBtn.style.display = 'inline-block';
+    closeCameraBtn.style.display = 'inline-block';
+    openCameraBtn.style.display = 'none';
+    if(isMobile()){
+      flipCameraBtn.style.display = 'inline-block';
+      flipCameraBtn.onclick = async ()=>{ useBackCamera = !useBackCamera; stopCamera(); await openCameraBtn.click(); };
+    } else flipCameraBtn.style.display = 'none';
+  }catch(err){
+    console.error(err); alert('Camera not available or permission denied.');
   }
 });
-
-// Flip camera
-document.getElementById('flipCameraBtn').addEventListener('click', async () => {
-  useBackCamera = !useBackCamera;
-  stopCamera();
-  await document.getElementById('openCameraBtn').click();
-});
-
-// Snapshot button
-document.getElementById('snapBtn').addEventListener('click', () => {
-  snapshotCanvas.width = cameraEl.videoWidth;
-  snapshotCanvas.height = cameraEl.videoHeight;
-  snapCtx.drawImage(cameraEl, 0, 0, snapshotCanvas.width, snapshotCanvas.height); // Overlay excluded
-  alert('Snapshot taken! Overlay is not included.');
-});
-
-// Close camera
-document.getElementById('closeCameraBtn').addEventListener('click', stopCamera);
-
-function stopCamera() {
-  if (stream) stream.getTracks().forEach(track => track.stop());
-  stream = null;
-  cameraEl.srcObject = null;
-  overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-  document.getElementById('snapBtn').style.display = 'none';
-  document.getElementById('closeCameraBtn').style.display = 'none';
-  document.getElementById('flipCameraBtn').style.display = 'none';
-  document.getElementById('openCameraBtn').style.display = 'inline-block';
+function stopCamera(){
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  cameraEl.style.display = 'none';
+  snapBtn.style.display = 'none';
+  closeCameraBtn.style.display = 'none';
+  openCameraBtn.style.display = 'inline-block';
+  flipCameraBtn.style.display = 'none';
 }
 closeCameraBtn.addEventListener('click', stopCamera);
 
@@ -847,4 +784,5 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
