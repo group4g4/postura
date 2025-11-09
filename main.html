@@ -17,33 +17,60 @@
   }
 
   html,body{height:100%;margin:0;font-family:'Segoe UI',Poppins,system-ui,Arial,sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--muted);-webkit-font-smoothing:antialiased}
-  header{position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:12px 18px;background: rgba(255,255,246,0.95);backdrop-filter: blur(6px);box-shadow:0 2px 8px rgba(0,0,0,0.06);z-index:100;}
+
+  /* Header */
+  header{
+    position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:12px 18px;
+    background: rgba(255,255,246,0.95);backdrop-filter: blur(6px);box-shadow:0 2px 8px rgba(0,0,0,0.06);z-index:100;
+  }
   header img.logo{width:56px;height:56px;border-radius:10px;object-fit:cover;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.12)}
   header h1{margin:0;font-size:1.2rem;color:#5c4b00}
+
+  /* Layout */
   .wrap{max-width:980px;margin:18px auto;padding:12px}
   .container{background:#fff;border-radius:12px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,0.06);text-align:center}
+
+  /* Front page instructions */
   .instructions{max-width:760px;margin:0 auto 14px;text-align:center}
   .instructions h3{color:var(--accent);margin-bottom:6px}
   .instructions ol{display:inline-block;text-align:left;margin:0;padding-left:18px;color:#444}
   .instructions img.ref{display:block;margin:12px auto;width:auto;height:auto;max-width:320px}
+
+  /* Controls */
   .controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:12px}
   input[type=file]{padding:8px;border-radius:8px;background:#fffbe0;border:1px solid #f0e3a0;cursor:pointer}
   button{background:linear-gradient(135deg,#fbc02d,#f9a825);color:white;border:0;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,0.08);transition:transform .12s,box-shadow .12s}
   button.secondary{background:#fff8e1;color:#4a4a4a;border:1px solid #f1e0a0}
   button.danger{background:linear-gradient(135deg,#ef5350,#e53935)}
   button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,0.10)}
+
+  /* Canvas/video container */
   .viewer{position:relative;display:inline-block;max-width:100%;}
   canvas{display:block;max-width:820px;width:100%;height:auto;border-radius:12px;border:2px dashed rgba(251,192,45,0.25);box-shadow:0 6px 18px rgba(0,0,0,0.06)}
   video{display:block;max-width:820px;width:100%;height:auto;border-radius:12px}
-  .processingBox{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background: rgba(255, 249, 200, 0.96);backdrop-filter: blur(4px);padding:12px 18px;border-radius:10px;font-weight:700;color:#5c4b00;box-shadow:0 8px 20px rgba(0,0,0,0.08);opacity:0;pointer-events:none;transition:opacity .25s;}
+
+  /* Processing overlay (centered, fade) */
+  .processingBox{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    background: rgba(255, 249, 200, 0.96);
+    backdrop-filter: blur(4px);
+    padding:12px 18px;border-radius:10px;font-weight:700;color:#5c4b00;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);opacity:0;pointer-events:none;transition:opacity .25s;
+  }
   .processingBox.show{opacity:1;pointer-events:auto}
+
+  /* Result text */
   #result{margin-top:12px;font-size:16px;font-weight:700;min-height:40px}
   .warning{color:#e53935;font-weight:700}
+
+  /* Remarks under image */
   #angleVal{margin-top:8px;font-weight:700}
   #remark{margin-top:6px;font-weight:600}
   #remark.good{color:var(--good)}
   #remark.atrisk{color:var(--atrisk)}
   #remark.poor{color:var(--poor)}
+
+  /* History (collapsible) */
   .historyWrap{max-width:820px;margin:12px auto;text-align:left}
   .historyHeader{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .historyPanel{background:#fff;border-radius:10px;padding:10px;margin-top:8px;box-shadow:0 6px 18px rgba(0,0,0,0.04);display:none;max-height:320px;overflow:auto}
@@ -51,81 +78,98 @@
   .historyLeft{display:block}
   .historyTag{padding:6px 8px;border-radius:8px;font-weight:700}
   .divider{height:1px;background:#e0e0e0;margin:8px 0}
-  @media(max-width:700px){header img.logo{width:48px;height:48px}.instructions img.ref{max-width:260px}.historyCard{flex-direction:column;align-items:flex-start}}
+
+  /* small screens */
+  @media(max-width:700px){
+    header img.logo{width:48px;height:48px}
+    .instructions img.ref{max-width:260px}
+    .historyCard{flex-direction:column;align-items:flex-start}
+  }
 </style>
 </head>
 <body>
-<header>
-  <img src="logo.png" alt="POSTURA logo" class="logo" id="logoLink">
-  <h1>POSTURA</h1>
-</header>
-<div class="wrap">
-  <div id="frontPage" class="container">
-    <h2 style="color:var(--accent);margin-bottom:8px">POSTURA</h2>
-    <div class="instructions">
-      <h3>Instructions</h3>
-      <ol>
-        <li>Upload a side-view photo or use your camera.</li>
-        <li>Click on the <strong>tragus (ear)</strong> first.</li>
-        <li>Then click on <strong>C7 (neck base)</strong>.</li>
-        <li>Save each attempt to record results.</li>
-      </ol>
-      <img src="CVA.jpg" alt="Reference points" class="ref">
-    </div>
-    <div style="margin-top:10px"><button id="startBtn">Start</button></div>
-    <div style="margin-top:14px">
-      <div id="recentPreview" style="display:none; margin:0 auto; max-width:540px; text-align:left; background:#fff8e8; padding:10px; border-radius:8px; box-shadow:0 6px 12px rgba(0,0,0,0.04)">
-        <div style="font-weight:700">Most recent result</div>
-        <div id="recentText" style="margin-top:6px;color:#444"></div>
+  <header>
+    <img src="logo.png" alt="POSTURA logo" class="logo" id="logoLink">
+    <h1>POSTURA</h1>
+  </header>
+
+  <div class="wrap">
+    <!-- FRONT PAGE -->
+    <div id="frontPage" class="container">
+      <h2 style="color:var(--accent);margin-bottom:8px">POSTURA</h2>
+      <div class="instructions">
+        <h3>Instructions</h3>
+        <ol>
+          <li>Upload a side-view photo or use your camera.</li>
+          <li>Click on the <strong>tragus (ear)</strong> first.</li>
+          <li>Then click on <strong>C7 (neck base)</strong>.</li>
+          <li>Save each attempt to record results.</li>
+        </ol>
+        <img src="CVA.jpg" alt="Reference points" class="ref">
       </div>
-    </div>
-  </div>
-
-  <div id="mainApp" class="container" style="display:none;">
-    <h2 style="color:var(--accent);margin-bottom:8px">POSTURA</h2>
-    <div class="controls" role="group" aria-label="controls">
-      <input id="upload" type="file" accept="image/*">
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button id="openCameraBtn">Open Camera</button>
-        <button id="flipCameraBtn" class="secondary" style="display:none">Flip Camera</button>
-        <button id="closeCameraBtn" class="secondary" style="display:none">Close Camera</button>
-        <button id="snapBtn" class="secondary" style="display:none">Capture</button>
+      <div style="margin-top:10px">
+        <button id="startBtn">Start</button>
       </div>
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button id="resetPointsBtn" class="secondary">Reset Points</button>
-        <button id="saveAttemptBtn" class="secondary" style="display:none">Save Attempt</button>
-        <button id="resetImageBtn" class="secondary">Reset Image</button>
-        <button id="toggleHistoryBtn" class="secondary">📜 View History</button>
-      </div>
-    </div>
-
-    <div class="viewer" id="viewer">
-      <video id="camera" autoplay playsinline muted style="display:none"></video>
-      <canvas id="canvas"></canvas>
-      <div id="processingBox" class="processingBox">Processing…</div>
-    </div>
-
-    <div id="result"></div>
-    <div id="angleVal"></div>
-    <div id="remark"></div>
-
-    <div class="historyWrap">
-      <div class="historyHeader">
-        <div style="font-weight:700">History</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div id="historyCount" style="color:#666">0</div>
-          <button id="clearHistoryBtn" class="danger" style="background:linear-gradient(135deg,#ef5350,#e53935);border:0;padding:6px 10px;border-radius:10px;color:white;font-size:0.9rem">Clear History</button>
+      <div style="margin-top:14px">
+        <!-- preview of recent result if any -->
+        <div id="recentPreview" style="display:none; margin:0 auto; max-width:540px; text-align:left; background:#fff8e8; padding:10px; border-radius:8px; box-shadow:0 6px 12px rgba(0,0,0,0.04)">
+          <div style="font-weight:700">Most recent result</div>
+          <div id="recentText" style="margin-top:6px;color:#444"></div>
         </div>
       </div>
-      <div id="historyPanel" class="historyPanel"></div>
     </div>
 
-    <div style="margin-top:10px"><button onclick="goBack()" class="secondary">⬅ Back to Instructions</button></div>
-  </div>
-</div>
+    <!-- MAIN APP -->
+    <div id="mainApp" class="container" style="display:none;">
+      <h2 style="color:var(--accent);margin-bottom:8px">POSTURA</h2>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
+      <div class="controls" role="group" aria-label="controls">
+        <input id="upload" type="file" accept="image/*">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="openCameraBtn">Open Camera</button>
+          <button id="flipCameraBtn" class="secondary" style="display:none">Flip Camera</button>
+          <button id="closeCameraBtn" class="secondary" style="display:none">Close Camera</button>
+          <button id="snapBtn" class="secondary" style="display:none">Capture</button>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="resetPointsBtn" class="secondary">Reset Points</button>
+          <button id="saveAttemptBtn" class="secondary" style="display:none">Save Attempt</button>
+          <button id="resetImageBtn" class="secondary">Reset Image</button>
+          <button id="toggleHistoryBtn" class="secondary">📜 View History</button>
+        </div>
+      </div>
+
+      <div class="viewer" id="viewer">
+        <video id="camera" autoplay playsinline style="display:none"></video>
+        <canvas id="canvas"></canvas>
+        <div id="processingBox" class="processingBox">Processing…</div>
+      </div>
+
+      <div id="result"></div>
+      <div id="angleVal"></div>
+      <div id="remark"></div>
+
+      <!-- collapsible history -->
+      <div class="historyWrap">
+        <div class="historyHeader">
+          <div style="font-weight:700">History</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div id="historyCount" style="color:#666">0</div>
+            <button id="clearHistoryBtn" class="danger" style="background:linear-gradient(135deg,#ef5350,#e53935);border:0;padding:6px 10px;border-radius:10px;color:white;font-size:0.9rem">Clear History</button>
+          </div>
+        </div>
+        <div id="historyPanel" class="historyPanel"></div>
+      </div>
+
+      <div style="margin-top:10px">
+        <button onclick="goBack()" class="secondary">⬅ Back to Instructions</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tensorflow / BodyPix -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
 
 <script>
 /* ======= App state & elements ======= */
@@ -133,6 +177,7 @@ const startBtn = document.getElementById('startBtn');
 const frontPage = document.getElementById('frontPage');
 const mainApp = document.getElementById('mainApp');
 const logoLink = document.getElementById('logoLink');
+
 const upload = document.getElementById('upload');
 const openCameraBtn = document.getElementById('openCameraBtn');
 const flipCameraBtn = document.getElementById('flipCameraBtn');
@@ -143,6 +188,7 @@ const saveAttemptBtn = document.getElementById('saveAttemptBtn');
 const resetImageBtn = document.getElementById('resetImageBtn');
 const toggleHistoryBtn = document.getElementById('toggleHistoryBtn');
 const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const cameraEl = document.getElementById('camera');
@@ -150,58 +196,203 @@ const processingBox = document.getElementById('processingBox');
 const resultDiv = document.getElementById('result');
 const angleValDiv = document.getElementById('angleVal');
 const remarkDiv = document.getElementById('remark');
+
 const historyPanel = document.getElementById('historyPanel');
 const historyCount = document.getElementById('historyCount');
+const recentPreview = document.getElementById('recentPreview');
+const recentText = document.getElementById('recentText');
 
-let net = null, img = new Image(), segmentationMask = null, segmentationMeta = null, stream = null;
-let points = [], currentAttempt = null, savedAttempts = [], attemptCount = 0;
+let net = null;
+let img = new Image();
+let segmentationMask = null; // Uint8Array length = canvas.width*canvas.height
+let segmentationMeta = null; // store full segmentation object for better toMask usage
+let stream = null;
+
+let points = []; // click buffer [p1,p2]
+let currentAttempt = null;
+let savedAttempts = []; // holds attempts for current image
+let attemptCount = 0;
 const maxAttempts = 3;
 const attemptColors = ["#f44336","#4caf50","#2196f3"];
+
 let useBackCamera = true;
+
+/* persistent history across images (stored as array of summaries) */
 const LS_HISTORY_KEY = 'posturaHistoryData';
 let globalHistory = [];
 
-function showProcessing(show){ processingBox.classList.toggle('show', show); }
+/* ======= helpers ======= */
+function showProcessing(show){
+  if(show) processingBox.classList.add('show'); else processingBox.classList.remove('show');
+}
 function setResult(html){ resultDiv.innerHTML = html; }
 function clearResult(){ resultDiv.innerHTML = ''; angleValDiv.textContent=''; remarkDiv.textContent=''; remarkDiv.className=''; }
-function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
 
 function getCanvasCoords(evt){
   const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
   return {
-    x: Math.round((evt.clientX - rect.left) * canvas.width / rect.width),
-    y: Math.round((evt.clientY - rect.top) * canvas.height / rect.height)
+    x: Math.round((evt.clientX - rect.left) * scaleX),
+    y: Math.round((evt.clientY - rect.top) * scaleY)
   };
 }
 
-function resizeImage(img, maxWidth = 640){
-  const scale = Math.min(1, maxWidth / img.naturalWidth);
-  const tmp = document.createElement('canvas');
-  tmp.width = img.naturalWidth * scale;
-  tmp.height = img.naturalHeight * scale;
-  tmp.getContext('2d').drawImage(img,0,0,tmp.width,tmp.height);
-  return tmp;
+/* draw base image, mask overlay, attempts and current points */
+function drawCanvas(){
+  if(!img.src) { ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+  // stronger segmentation overlay when available
+  if(segmentationMask && segmentationMask.length === canvas.width * canvas.height){
+    try{
+      // subtle per-pixel tint to emphasize person region (increase contrast slightly)
+      const id = ctx.getImageData(0,0,canvas.width,canvas.height);
+      const data = id.data;
+      for(let i=0;i<segmentationMask.length;i++){
+        const idx = i*4;
+        if(segmentationMask[i] === 0){
+          // dim outside stronger
+          data[idx] = Math.round(data[idx]*0.78);
+          data[idx+1] = Math.round(data[idx+1]*0.78);
+          data[idx+2] = Math.round(data[idx+2]*0.78);
+        } else {
+          // brighten person slightly
+          data[idx] = Math.min(255, data[idx] + 26);
+          data[idx+1] = Math.min(255, data[idx+1] + 34);
+          data[idx+2] = Math.min(255, data[idx+2] + 12);
+        }
+      }
+      ctx.putImageData(id,0,0);
+      // draw crisp mask outline using bodyPix with increased mask opacity
+      if(net && segmentationMeta){
+        const mask = bodyPix.toMask(segmentationMeta, {r:255,g:255,b:0,a:160}, {r:0,g:0,b:0,a:0});
+        bodyPix.drawMask(canvas, img, mask, 0.55, 0, false); // increased opacity for visibility
+      }
+    }catch(e){ console.warn('mask overlay error',e); }
+  }
+
+  // draw saved attempts
+  savedAttempts.forEach((s,i)=>{
+    if(s.points){
+      ctx.strokeStyle = attemptColors[i % attemptColors.length];
+      ctx.fillStyle = attemptColors[i % attemptColors.length];
+      ctx.lineWidth = 3;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(s.points[0].x, s.points[0].y);
+      ctx.lineTo(s.points[1].x, s.points[1].y);
+      ctx.stroke();
+      s.points.forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2); ctx.fill();
+      });
+
+      // draw the dashed baseline for saved attempt
+      if(s.baseline){
+        // ********* UPDATED: flip baseline direction and scale length to 10% of canvas width *********
+        // compute dx/dy for saved attempt
+        const tragus = s.points[0];
+        const c7 = s.points[1];
+        const dx = c7.x - tragus.x;
+        const dy = c7.y - tragus.y;
+        const baselineLength = Math.max(10, canvas.width * 0.1); // 10% of canvas width, min 10px
+
+        ctx.setLineDash([6,6]); ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+        ctx.beginPath();
+        // draw baseline anchored at C7, extend left or right depending on slope direction
+        ctx.moveTo(c7.x, c7.y);
+        if (dx > 0 && dy > 0) {
+          // line slopes down left->right -> baseline to the left
+          ctx.lineTo(c7.x - baselineLength, c7.y);
+        } else if (dx < 0 && dy > 0) {
+          // line slopes down right->left -> baseline to the right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        } else {
+          // fallback (flat or upward): draw to the right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+  });
+
+  // draw current points and main line if 2
+  if(points.length>0){
+    ctx.fillStyle = 'orange';
+    points.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2); ctx.fill(); });
+    if(points.length===2){
+      ctx.strokeStyle = '#1976d2'; // blue solid measurement line
+      ctx.lineWidth = 3;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      ctx.lineTo(points[1].x, points[1].y);
+      ctx.stroke();
+
+      // draw baseline if currentAttempt has baseline (for in-progress visual)
+      if(currentAttempt && currentAttempt.baseline){
+        // ********* UPDATED: draw baseline anchored at C7 and auto-flip with 10% width *********
+        const tragus = points[0];
+        const c7 = points[1];
+        const dx = c7.x - tragus.x;
+        const dy = c7.y - tragus.y;
+        const baselineLength = Math.max(10, canvas.width * 0.1); // 10% width, min 10px
+
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6,6]); // dashed
+        ctx.beginPath();
+        ctx.moveTo(c7.x, c7.y);
+        if (dx > 0 && dy > 0) {
+          // slopes down left->right -> baseline to left
+          ctx.lineTo(c7.x - baselineLength, c7.y);
+        } else if (dx < 0 && dy > 0) {
+          // slopes down right->left -> baseline to right
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        } else {
+          ctx.lineTo(c7.x + baselineLength, c7.y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+  }
 }
 
-/* ======= Load BodyPix ======= */
+/* remove any on-document angle labels (we don't use on-image labels now) */
+function removeAngleLabelNodes(){ const n=document.querySelectorAll('.angle-label-dom'); n.forEach(x=>x.remove()); }
+
+/* ======= BodyPix load ======= */
+showProcessing(false);
 bodyPix.load({ architecture:'MobileNetV1', outputStride:16, multiplier:0.75 })
 .then(m => { net = m; console.log('BodyPix loaded'); })
 .catch(err => console.warn('BodyPix failed', err));
 
-/* ======= Upload handler ======= */
+/* ======= Upload handling ======= */
 upload.addEventListener('change', e=>{
-  const file = e.target.files[0]; if(!file) return;
+  const file = e.target.files[0];
+  if(!file) return;
   showProcessing(true);
   const reader = new FileReader();
   reader.onload = ev=>{
     img = new Image();
     img.onload = async ()=>{
-      const resized = resizeImage(img, 640);
-      canvas.width = resized.width; canvas.height = resized.height;
+      // set canvas to image natural size (no stretching)
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      // reset state and show processing
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.drawImage(resized,0,0);
-      segmentationMask = null; segmentationMeta = null; points=[]; currentAttempt=null; saveAttemptBtn.style.display='none'; clearResult();
-      if(net) await doSegmentation(resized);
+      segmentationMask = null; segmentationMeta = null;
+      drawCanvas();
+      points = []; currentAttempt = null; saveAttemptBtn.style.display='none'; clearResult(); removeAngleLabelNodes();
+      // run segmentation and then show image+overlay
+      if(net){
+        await doSegmentation(img);
+      } else {
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      }
       showProcessing(false);
       setResult('Click 2 points: (1) Tragus, (2) C7');
     };
@@ -211,121 +402,448 @@ upload.addEventListener('change', e=>{
 });
 
 /* ======= Camera functions ======= */
-async function openCamera(){
-  try{
-    const constraints = { video: isMobile() ? { facingMode: useBackCamera?"environment":"user", width:{ideal:640}, height:{ideal:480} } : true };
+function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+const cameraEl = document.getElementById('camera');
+const overlayCanvas = document.getElementById('overlayCanvas');
+const overlayCtx = overlayCanvas.getContext('2d');
+const snapshotCanvas = document.getElementById('snapshotCanvas');
+const snapCtx = snapshotCanvas.getContext('2d');
+
+let stream;
+let useBackCamera = true;
+
+const overlayImg = new Image();
+overlayImg.src = 'sideview-outline.png';
+
+document.getElementById('openCameraBtn').addEventListener('click', async () => {
+  try {
+    const constraints = { video: { facingMode: useBackCamera ? 'environment' : 'user' } };
     stream = await navigator.mediaDevices.getUserMedia(constraints);
-    cameraEl.srcObject = stream; cameraEl.style.display='block';
-    snapBtn.style.display='inline-block'; closeCameraBtn.style.display='inline-block'; openCameraBtn.style.display='none';
-    if(isMobile()){ flipCameraBtn.style.display='inline-block';
-      flipCameraBtn.onclick = async ()=>{ useBackCamera=!useBackCamera; stopCamera(); await openCamera(); };
-    } else flipCameraBtn.style.display='none';
-  } catch(err){ console.error(err); alert('Camera not available or permission denied.'); }
-}
+    cameraEl.srcObject = stream;
 
-function stopCamera(){
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-  cameraEl.style.display='none'; snapBtn.style.display='none'; closeCameraBtn.style.display='none'; openCameraBtn.style.display='inline-block'; flipCameraBtn.style.display='none';
-}
+    document.getElementById('snapBtn').style.display = 'inline-block';
+    document.getElementById('closeCameraBtn').style.display = 'inline-block';
+    document.getElementById('flipCameraBtn').style.display = 'inline-block';
+    document.getElementById('openCameraBtn').style.display = 'none';
 
-openCameraBtn.addEventListener('click', openCamera);
+    cameraEl.addEventListener('loadedmetadata', () => {
+      overlayCanvas.width = cameraEl.videoWidth;
+      overlayCanvas.height = cameraEl.videoHeight;
+    });
+
+    function drawOverlay() {
+      overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+      if (overlayImg.complete) {
+        // Maintain aspect ratio
+        const videoRatio = cameraEl.videoWidth / cameraEl.videoHeight;
+        const imgRatio = overlayImg.width / overlayImg.height;
+
+        let drawWidth, drawHeight;
+        if (videoRatio > imgRatio) {
+          drawHeight = overlayCanvas.height;
+          drawWidth = imgRatio * drawHeight;
+        } else {
+          drawWidth = overlayCanvas.width;
+          drawHeight = drawWidth / imgRatio;
+        }
+
+        const offsetX = (overlayCanvas.width - drawWidth) / 2;
+        const offsetY = (overlayCanvas.height - drawHeight) / 2;
+
+        overlayCtx.drawImage(overlayImg, offsetX, offsetY, drawWidth, drawHeight);
+      }
+
+      requestAnimationFrame(drawOverlay);
+    }
+    drawOverlay();
+
+  } catch (err) {
+    alert('Camera not available or permission denied.');
+    console.error(err);
+  }
+});
+
+// Flip camera
+document.getElementById('flipCameraBtn').addEventListener('click', async () => {
+  useBackCamera = !useBackCamera;
+  stopCamera();
+  await document.getElementById('openCameraBtn').click();
+});
+
+// Snapshot button
+document.getElementById('snapBtn').addEventListener('click', () => {
+  snapshotCanvas.width = cameraEl.videoWidth;
+  snapshotCanvas.height = cameraEl.videoHeight;
+  snapCtx.drawImage(cameraEl, 0, 0, snapshotCanvas.width, snapshotCanvas.height); // Overlay excluded
+  alert('Snapshot taken! Overlay is not included.');
+});
+
+// Close camera
+document.getElementById('closeCameraBtn').addEventListener('click', stopCamera);
+
+function stopCamera() {
+  if (stream) stream.getTracks().forEach(track => track.stop());
+  stream = null;
+  cameraEl.srcObject = null;
+  overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+  document.getElementById('snapBtn').style.display = 'none';
+  document.getElementById('closeCameraBtn').style.display = 'none';
+  document.getElementById('flipCameraBtn').style.display = 'none';
+  document.getElementById('openCameraBtn').style.display = 'inline-block';
+}
 closeCameraBtn.addEventListener('click', stopCamera);
 
 snapBtn.addEventListener('click', async ()=>{
   if(!cameraEl.videoWidth) return;
   canvas.width = cameraEl.videoWidth; canvas.height = cameraEl.videoHeight;
   ctx.drawImage(cameraEl,0,0,canvas.width,canvas.height);
-  img = new Image(); img.src = canvas.toDataURL();
-  segmentationMask = null; segmentationMeta = null; points=[]; currentAttempt=null; saveAttemptBtn.style.display='none';
-  clearResult();
+  img = new Image();
+  img.src = canvas.toDataURL();
+  // reset state
+  segmentationMask = null; segmentationMeta = null; points = []; currentAttempt = null; saveAttemptBtn.style.display='none';
+  clearResult(); removeAngleLabelNodes();
   showProcessing(true);
-  if(net) await doSegmentation(canvas);
+  if(net) await doSegmentation(img);
   showProcessing(false);
   stopCamera();
   setResult('Click 2 points: (1) Tragus, (2) C7');
 });
 
-/* ======= Segmentation ======= */
+/* ======= Segmentation (BodyPix) ======= */
 async function doSegmentation(imgElement){
   try{
     showProcessing(true);
-    const segmentation = await net.segmentPerson(imgElement,{internalResolution:'medium'});
-    segmentationMask = segmentation.data; segmentationMeta = segmentation;
-    const mask = bodyPix.toMask(segmentation,{r:255,g:255,b:0,a:180},{r:0,g:0,b:0,a:0});
-    bodyPix.drawMask(canvas,imgElement,mask,0.6,0,false);
-  } catch(err){ console.warn('Segmentation error', err); }
+    // Ensure canvas dimensions match image natural size
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    // segmentation (store full object for toMask usage)
+    const segmentation = await net.segmentPerson(imgElement, { internalResolution: 'medium' });
+    segmentationMask = segmentation.data; // Uint8Array length = width*height
+    segmentationMeta = segmentation; // keep object for toMask
+    // draw mask overlay with bodyPix utility, higher alpha for visibility
+    const mask = bodyPix.toMask(segmentation, {r:255,g:255,b:0,a:160}, {r:0,g:0,b:0,a:0});
+    bodyPix.drawMask(canvas, imgElement, mask, 0.55, 0, false);
+    // then overlay our markers/attempts
+    drawCanvas();
+  }catch(err){ console.warn('Segmentation error', err); }
   finally{ showProcessing(false); }
 }
 
-/* ======= Click to select points & measure angle ======= */
-canvas.addEventListener('click',(e)=>{
-  if(!canvas.width||!img.src) return;
-  const {x,y}=getCanvasCoords(e);
-  if(segmentationMask && segmentationMask.length===canvas.width*canvas.height && segmentationMask[y*canvas.width+x]===0){ alert('⚠️ Click only on the person.'); return; }
-  points.push({x,y}); currentAttempt=null; saveAttemptBtn.style.display='none';
+/* ======= Canvas clicks -> point selection + validation ======= */
+canvas.addEventListener('click', (e)=>{
+  if(!canvas.width || !img.src) return;
+  const {x,y} = getCanvasCoords(e);
 
-  ctx.fillStyle='red'; ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+  // click outside mask -> warning (if mask exists)
+  if(segmentationMask && segmentationMask.length === canvas.width*canvas.height){
+    const idx = y * canvas.width + x;
+    if(segmentationMask[idx] === 0){
+      alert('⚠️ Please click only on the person.');
+      return;
+    }
+  }
 
-  if(points.length===2){
-    ctx.strokeStyle='#1976d2'; ctx.lineWidth=3; ctx.setLineDash([]); ctx.beginPath();
+  // push to points
+  points.push({x,y});
+
+  // immediately redraw to ensure previous drawings are cleared and new markers shown
+  currentAttempt = null; saveAttemptBtn.style.display='none';
+  drawCanvas();
+
+  // draw marker (we rely on drawCanvas but add immediate visual feedback)
+  ctx.fillStyle = 'red';
+  ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+
+  if(points.length === 2){
+    // draw measurement line (solid blue)
+    ctx.strokeStyle = '#1976d2'; ctx.lineWidth = 3; ctx.setLineDash([]); ctx.beginPath();
     ctx.moveTo(points[0].x,points[0].y); ctx.lineTo(points[1].x,points[1].y); ctx.stroke();
 
-    const dx=points[1].x-points[0].x, dy=points[1].y-points[0].y, deg=180/Math.PI;
-    let angle=Math.abs(Math.atan2(dy,dx)*deg); if(angle>90) angle=180-angle;
+    // compute dx/dy
+    const dx = points[1].x - points[0].x;
+    const dy = points[1].y - points[0].y;
+    const deg = 180/Math.PI;
+    // angle with horizontal pointing to right
+    const angleRight = Math.abs(Math.atan2(dy, dx) * deg);
+    // angle with horizontal pointing to left (reverse dx sign)
+    const angleLeft = Math.abs(Math.atan2(dy, -dx) * deg);
 
-    angleValDiv.textContent=`Angle: ${angle.toFixed(2)}°`;
-    let remark='', cls='';
-    if(angle>=50){remark='Poor'; cls='poor';} else if(angle>=40){remark='At Risk'; cls='atrisk';} else{remark='Good'; cls='good';}
-    remarkDiv.textContent=remark; remarkDiv.className=cls;
+    // choose smaller angle direction (ensures angle <= 90)
+    let chosenAngle = Math.min(angleRight, angleLeft);
 
-    currentAttempt = {angle:angle.toFixed(2), remark, points:[...points], timestamp:new Date().toLocaleString()};
-    saveAttemptBtn.style.display='inline-block';
+    // if chosenAngle > 90 => it is outside expected range (very vertical) -> warn and abort
+    if(chosenAngle > 90){
+      // draw baseline anyway (default right)
+      const lower = (points[0].y > points[1].y) ? points[0] : points[1];
+      ctx.setLineDash([6,6]); ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.beginPath();
+      ctx.moveTo(lower.x, lower.y); ctx.lineTo(canvas.width, lower.y); ctx.stroke(); ctx.setLineDash([]);
+      alert('⚠️ Angle exceeds expected range (> 90°). Please recheck the points.');
+      setResult('');
+      angleValDiv.textContent = '';
+      remarkDiv.textContent = '';
+      return;
+    }
+
+    // determine baseline direction (left or right) to make the angle acute visually:
+    // If angleLeft smaller -> baseline extends left from the lower point, else right.
+    const lower = (points[0].y > points[1].y) ? points[0] : points[1];
+    let baselineStart = {x: lower.x, y: lower.y}, baselineEnd;
+    // ********* UPDATED: use auto-scaled baseline length (10% canvas width) and anchor at C7 *********
+    const dx2 = points[1].x - points[0].x;
+    const dy2 = points[1].y - points[0].y;
+    const baselineLength = Math.max(10, canvas.width * 0.1); // 10% width, minimum 10px
+    // Anchor baseline at C7 (points[1]) and extend left/right based on slope direction
+    if (dx2 > 0 && dy2 > 0) {
+      // downward left-to-right -> extend left
+      baselineStart = { x: points[1].x - baselineLength, y: points[1].y };
+      baselineEnd = { x: points[1].x, y: points[1].y };
+    } else if (dx2 < 0 && dy2 > 0) {
+      // downward right-to-left -> extend right
+      baselineStart = { x: points[1].x, y: points[1].y };
+      baselineEnd = { x: points[1].x + baselineLength, y: points[1].y };
+    } else {
+      // fallback: extend right
+      baselineStart = { x: points[1].x, y: points[1].y };
+      baselineEnd = { x: points[1].x + baselineLength, y: points[1].y };
+    }
+
+    // draw dashed baseline
+    ctx.setLineDash([6,6]); ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(baselineStart.x, baselineStart.y); ctx.lineTo(baselineEnd.x, baselineEnd.y); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // angle is the chosenAngle (already ensured <= 90)
+    const angle = chosenAngle;
+
+    // classification thresholds
+    let remarkText='', remarkClass='';
+    if(angle >= 55){
+      remarkText = 'Posture within a healthy range.';
+      remarkClass = 'good';
+    } else if(angle >= 45){
+      remarkText = 'Mild forward head posture detected.';
+      remarkClass = 'atrisk';
+    } else {
+      remarkText = 'Significant forward head posture detected.';
+      remarkClass = 'poor';
+    }
+    angleValDiv.textContent = `CVA: ${angle.toFixed(2)}°`;
+    remarkDiv.textContent = remarkText;
+    remarkDiv.className = remarkClass;
+
+    setResult(`Click "Save Attempt" if satisfied or "Reset Points" to try again.`);
+    saveAttemptBtn.style.display = 'inline-block';
+
+    // store currentAttempt including baseline endpoints for redraw when saving/reseting
+    currentAttempt = { angle: parseFloat(angle.toFixed(2)), points: [ {...points[0]}, {...points[1]} ], baseline: { start: baselineStart, end: baselineEnd }, remarkText, remarkClass };
+    // ensure baseline is visible via drawCanvas update
+    drawCanvas();
   }
 });
 
-/* ======= Save Attempt ======= */
-saveAttemptBtn.addEventListener('click',()=>{
+/* ======= Save attempt & history ======= */
+saveAttemptBtn.addEventListener('click', ()=>{
   if(!currentAttempt) return;
-  savedAttempts.push(currentAttempt); globalHistory.push(currentAttempt);
-  attemptCount++; if(attemptCount>maxAttempts) attemptCount=maxAttempts;
-  updateHistoryUI();
-  saveToLocalStorage();
-  saveAttemptBtn.style.display='none'; points=[];
-  setResult(`Attempt saved!`);
+  if(attemptCount >= maxAttempts){
+    setResult("<span class='warning'>⚠️ Maximum attempts reached.</span>");
+    saveAttemptBtn.style.display='none';
+    return;
+  }
+  savedAttempts.push(currentAttempt);
+  const idx = savedAttempts.length - 1;
+  // redraw saved attempt overlay in color
+  const c = attemptColors[idx % attemptColors.length];
+  ctx.strokeStyle = c; ctx.fillStyle = c; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(currentAttempt.points[0].x,currentAttempt.points[0].y); ctx.lineTo(currentAttempt.points[1].x,currentAttempt.points[1].y); ctx.stroke();
+  currentAttempt.points.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2); ctx.fill(); });
+
+  // add history card for current image (but also to global history after reset image)
+  const card = document.createElement('div');
+  card.className = 'historyCard';
+  const left = document.createElement('div'); left.className = 'historyLeft';
+  left.innerHTML = `<div><strong>Attempt ${idx+1}</strong>: ${currentAttempt.angle}°</div><div style="font-size:0.95rem;margin-top:6px;color:#555">${currentAttempt.remarkText}</div>`;
+  const tag = document.createElement('div');
+  tag.className = 'historyTag';
+  tag.textContent = currentAttempt.remarkText.includes('Posture') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
+  // color tag
+  if(currentAttempt.remarkClass === 'good') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
+  else if(currentAttempt.remarkClass === 'atrisk') tag.style.background = '#fff8e1', tag.style.color = '#ff9800';
+  else tag.style.background = '#ffebee', tag.style.color = '#c62828';
+
+  card.appendChild(left);
+  card.appendChild(tag);
+  historyPanel.prepend(card);
+  historyCount.textContent = historyPanel.children.length;
+
+  // also do not persist to global history until user resets image (so history represents previous images).
+  attemptCount++;
+  currentAttempt = null;
+  saveAttemptBtn.style.display='none';
+  setResult(`Saved attempt ${idx+1}.`);
+  // clear points for next attempt (but keep saved drawn)
+  points = [];
+  // redraw to ensure saved attempts persist
+  drawCanvas();
+  angleValDiv.textContent = '';
+  remarkDiv.textContent = '';
+  // if hit max attempts compute average
+  if(attemptCount >= maxAttempts) computeAverage();
 });
 
-/* ======= Reset Points & Image ======= */
-resetPointsBtn.addEventListener('click',()=>{ points=[]; currentAttempt=null; saveAttemptBtn.style.display='none'; clearResult(); redrawImage(); });
-resetImageBtn.addEventListener('click',()=>{ points=[]; currentAttempt=null; saveAttemptBtn.style.display='none'; clearResult(); ctx.clearRect(0,0,canvas.width,canvas.height); });
-
-function redrawImage(){ if(img.src) ctx.drawImage(img,0,0,canvas.width,canvas.height); if(segmentationMask){ const mask = bodyPix.toMask(segmentationMeta,{r:255,g:255,b:0,a:180},{r:0,g:0,b:0,a:0}); bodyPix.drawMask(canvas,img,mask,0.6,0,false); } }
-
-/* ======= History ======= */
-toggleHistoryBtn.addEventListener('click',()=>{ historyPanel.style.display=historyPanel.style.display==='block'?'none':'block'; });
-clearHistoryBtn.addEventListener('click',()=>{ globalHistory=[]; savedAttempts=[]; attemptCount=0; updateHistoryUI(); localStorage.removeItem(LS_HISTORY_KEY); });
-
-function updateHistoryUI(){
-  historyPanel.innerHTML=''; globalHistory.forEach((a,i)=>{
-    const div=document.createElement('div'); div.className='historyCard';
-    div.innerHTML=`<div class="historyLeft"><strong>${a.timestamp}</strong><br>Angle: ${a.angle}° | Remark: ${a.remark}</div>`;
-    historyPanel.appendChild(div);
-  });
-  historyCount.textContent=globalHistory.length;
+/* ======= Compute average for current image ======= */
+function computeAverage(){
+  if(savedAttempts.length === 0) return;
+  const sum = savedAttempts.reduce((acc,o)=>acc+o.angle,0);
+  const avg = (sum/savedAttempts.length).toFixed(2);
+  let label='';
+  if(avg >= 55) label='Good posture';
+  else if(avg >= 45) label='At risk';
+  else label='Poor posture';
+  setResult(`<b>Average CVA: ${avg}°</b> — ${label}`);
 }
 
-/* ======= LocalStorage ======= */
-function saveToLocalStorage(){ localStorage.setItem(LS_HISTORY_KEY,JSON.stringify(globalHistory)); }
-function loadFromLocalStorage(){ const data=localStorage.getItem(LS_HISTORY_KEY); if(data){ globalHistory=JSON.parse(data); updateHistoryUI(); } }
-loadFromLocalStorage();
+/* ======= Reset Points (keeps image+overlay+saved attempts) ======= */
+resetPointsBtn.addEventListener('click', ()=>{
+  // clear only the temporary points and current attempt, keep saved attempts and mask
+  points = [];
+  currentAttempt = null;
+  saveAttemptBtn.style.display='none';
+  angleValDiv.textContent = '';
+  remarkDiv.textContent = ''; remarkDiv.className='';
+  removeAngleLabelNodes();
+  drawCanvas();
+  setResult('Click 2 points: (1) Tragus, (2) C7');
+});
 
-/* ======= Navigation ======= */
-startBtn.addEventListener('click',()=>{ frontPage.style.display='none'; mainApp.style.display='block'; });
+/* ======= Reset Image (save summary to global history and clear current) ======= */
+resetImageBtn.addEventListener('click', ()=>{
+  // If there were saved attempts, save a summary to global history list and to localStorage
+  if(savedAttempts.length > 0){
+    const sum = savedAttempts.reduce((acc,o)=>acc+o.angle,0);
+    const avg = (sum/savedAttempts.length).toFixed(2);
+    let label='';
+    if(avg >= 55) label='Good posture';
+    else if(avg >= 45) label='At risk';
+    else label='Poor posture';
+
+    // build summary object
+    const summary = {
+      timestamp: Date.now(),
+      attempts: savedAttempts.map((s,i)=>({attempt: i+1, angle: s.angle, remark: s.remarkText})),
+      average: avg,
+      label
+    };
+    // prepend to globalHistory and persist
+    globalHistory.unshift(summary);
+    try{ localStorage.setItem(LS_HISTORY_KEY, JSON.stringify(globalHistory)); }catch(e){ console.warn('ls save failed',e); }
+
+    // add a summary card to UI historyPanel (top)
+    const summaryCard = document.createElement('div');
+    summaryCard.className = 'historyCard';
+    summaryCard.style.background = (label==='Good posture') ? '#e8f5e9' : ((label==='At risk') ? '#fff3e0' : '#ffebee');
+    const left = document.createElement('div'); left.className='historyLeft';
+    let html = `<b>Previous Image Attempts Summary</b><div style="margin-top:6px">`;
+    summary.attempts.forEach(a=> html += `Attempt ${a.attempt}: ${a.angle}° — ${a.remark}<br>`);
+    html += `<hr style="margin:6px 0"><b>Average CVA:</b> ${avg}°<br><b>Posture:</b> ${label}</div>`;
+    left.innerHTML = html;
+    const tag = document.createElement('div');
+    tag.className = 'historyTag';
+    tag.textContent = label;
+    if(label === 'Good posture') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
+    else if(label === 'At risk') tag.style.background = '#fff3e0', tag.style.color = '#ff9800';
+    else tag.style.background = '#ffebee', tag.style.color = '#c62828';
+    summaryCard.appendChild(left);
+    summaryCard.appendChild(tag);
+    historyPanel.prepend(summaryCard);
+    historyCount.textContent = historyPanel.children.length;
+  }
+
+  // clear everything for next image
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  img = new Image();
+  canvas.width = 0; canvas.height = 0;
+  segmentationMask = null; segmentationMeta = null;
+  points = []; currentAttempt = null;
+  savedAttempts = []; attemptCount = 0;
+  saveAttemptBtn.style.display='none';
+  angleValDiv.textContent = '';
+  remarkDiv.textContent = '';
+  setResult('Upload or capture a new photo');
+});
+
+/* ======= History toggle & load ======= */
+toggleHistoryBtn.addEventListener('click', ()=>{
+  if(historyPanel.style.display === 'block') { historyPanel.style.display = 'none'; toggleHistoryBtn.textContent = '📜 View History'; }
+  else { historyPanel.style.display = 'block'; toggleHistoryBtn.textContent = '📜 Hide History'; }
+});
+
+clearHistoryBtn.addEventListener('click', ()=>{
+  if(!confirm('Clear all saved history? This cannot be undone.')) return;
+  globalHistory = [];
+  try{ localStorage.removeItem(LS_HISTORY_KEY); }catch(e){ console.warn('ls clear failed',e); }
+  // also clear history UI
+  historyPanel.innerHTML = '';
+  historyCount.textContent = 0;
+  setResult('History cleared.');
+});
+
+function loadHistory(){
+  try{
+    const saved = localStorage.getItem(LS_HISTORY_KEY);
+    if(saved){
+      globalHistory = JSON.parse(saved);
+      // build UI from globalHistory (most recent first)
+      historyPanel.innerHTML = '';
+      globalHistory.forEach(summary=>{
+        const card = document.createElement('div');
+        card.className = 'historyCard';
+        const left = document.createElement('div'); left.className = 'historyLeft';
+        let html = `<div style="font-weight:700">${new Date(summary.timestamp).toLocaleString()}</div><div style="margin-top:6px">`;
+        summary.attempts.forEach(a=> html += `Attempt ${a.attempt}: ${a.angle}° — ${a.remark}<br>`);
+        html += `<hr style="margin:6px 0"><b>Avg:</b> ${summary.average}° — ${summary.label}</div>`;
+        left.innerHTML = html;
+        const tag = document.createElement('div'); tag.className='historyTag'; tag.textContent = summary.label;
+        if(summary.label === 'Good posture') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
+        else if(summary.label === 'At risk') tag.style.background = '#fff3e0', tag.style.color = '#ff9800';
+        else tag.style.background = '#ffebee', tag.style.color = '#c62828';
+        card.appendChild(left); card.appendChild(tag);
+        historyPanel.appendChild(card);
+      });
+      historyCount.textContent = historyPanel.children.length;
+    }
+  }catch(e){
+    console.warn('failed loading history',e);
+  }
+}
+
+/* ======= Stop camera before unload ======= */
+window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forEach(t=>t.stop()); });
+
+/* ======= Front/Main navigation ======= */
+startBtn.addEventListener('click', ()=>{ frontPage.style.display='none'; mainApp.style.display='block'; loadHistory(); });
+logoLink.addEventListener('click', ()=>{ frontPage.style.display='block'; mainApp.style.display='none'; });
+
 function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'; }
-logoLink.addEventListener('click',()=>{ frontPage.style.display='block'; mainApp.style.display='none'; });
+
+/* ======= Initialize (keep front visible) ======= */
+(function init(){
+  canvas.width = 0; canvas.height = 0;
+  loadHistory();
+})();
 </script>
+  
+<script>
+  // Redirect user to main.html after logging out
+  document.addEventListener("DOMContentLoaded", function() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function() {
+        window.location.href = "main.html";
+      });
+    }
+  });
+</script>
+  
 </body>
 </html>
-
-
-
-
