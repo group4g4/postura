@@ -49,6 +49,10 @@
   canvas{display:block;max-width:820px;width:100%;height:auto;border-radius:12px;border:2px dashed rgba(251,192,45,0.25);box-shadow:0 6px 18px rgba(0,0,0,0.06)}
   video{display:block;max-width:820px;width:100%;height:auto;border-radius:12px}
 
+  /* Mirror front camera */
+video.mirrored {
+    transform: scaleX(-1);
+}
   /* Processing overlay (centered, fade) */
   .processingBox{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -432,14 +436,34 @@ upload.addEventListener('change', e=>{
 });
 
 /* ======= Camera functions ======= */
-function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+function isMobile(){ 
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); 
+}
+
 openCameraBtn.addEventListener('click', async () => {
   try {
-    const constraints = {
-      video: {
-        facingMode: useBackCamera ? 'environment' : 'user'
-      }
-    };
+    await navigator.mediaDevices.getUserMedia({ video: true });
+
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+    let selectedDeviceId = null;
+
+    if (useBackCamera) {
+      const backCam = videoDevices.find(d =>
+        /back|rear/i.test(d.label) && !/0\.5|ultra|wide/i.test(d.label)
+      );
+      selectedDeviceId = backCam ? backCam.deviceId : null;
+    } else {
+      
+      const frontCam = videoDevices.find(d => /front|user/i.test(d.label));
+      selectedDeviceId = frontCam ? frontCam.deviceId : null;
+    }
+
+    const constraints = selectedDeviceId
+      ? { video: { deviceId: { exact: selectedDeviceId } } }
+      : { video: { facingMode: useBackCamera ? 'environment' : 'user' } };
+
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     cameraEl.srcObject = stream;
     cameraEl.style.display = 'block';
@@ -447,6 +471,13 @@ openCameraBtn.addEventListener('click', async () => {
     closeCameraBtn.style.display = 'inline-block';
     flipCameraBtn.style.display = isMobile() ? 'inline-block' : 'none';
     openCameraBtn.style.display = 'none';
+
+    if (useBackCamera) {
+      cameraEl.classList.remove('mirrored');
+    } else {
+      cameraEl.classList.add('mirrored');
+    }
+
   } catch (err) {
     console.error('Camera access error:', err);
     alert('Unable to access camera. Please allow permission or check browser settings.');
@@ -865,6 +896,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
