@@ -433,6 +433,31 @@ upload.addEventListener('change', e=>{
 
 /* ======= Camera functions ======= */
 function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+openCameraBtn.addEventListener('click', async () => {
+  try {
+    const constraints = {
+      video: {
+        facingMode: useBackCamera ? 'environment' : 'user'
+      }
+    };
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    cameraEl.srcObject = stream;
+    cameraEl.style.display = 'block';
+    snapBtn.style.display = 'inline-block';
+    closeCameraBtn.style.display = 'inline-block';
+    flipCameraBtn.style.display = isMobile() ? 'inline-block' : 'none';
+    openCameraBtn.style.display = 'none';
+  } catch (err) {
+    console.error('Camera access error:', err);
+    alert('Unable to access camera. Please allow permission or check browser settings.');
+  }
+});
+
+flipCameraBtn.addEventListener('click', () => {
+  useBackCamera = !useBackCamera; // toggle camera direction
+  stopCamera();                   // stop the current stream
+  openCameraBtn.click();          // reopen camera with new facing mode
+});
 
 snapBtn.addEventListener('click', () => {
   const video = cameraEl;
@@ -840,6 +865,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
