@@ -101,7 +101,7 @@
   position: absolute;
   bottom: 0;
   top: 0;
-  left: 0;
+  left: 50%;
   transform: translateX(-50%);
   width: 100%;
   height: auto;
@@ -171,7 +171,7 @@
       </div>
 
       <div class="viewer" id="viewer">
-        <div class="camera-container">
+        <div class="camera-container" style="display:none">
           <video id="camera" autoplay playsinline></video>
           <div class="overlay"></div>
         </div> 
@@ -844,6 +844,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
