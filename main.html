@@ -434,41 +434,57 @@ upload.addEventListener('change', e=>{
 /* ======= Camera functions ======= */
 function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
 
-openCameraBtn.addEventListener('click', async () => {
-  try {
-    const constraints = isMobile()
-      ? { video: { facingMode: useBackCamera ? { exact: "environment" } : "user" } }
-      : { video: true };
+snapBtn.addEventListener('click', () => {
+  const video = cameraEl;
+  const canvasWidth = video.videoWidth;
+  const canvasHeight = video.videoHeight;
 
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
-    cameraEl.srcObject = stream;
-    cameraEl.style.display = 'block';
-    snapBtn.style.display = 'inline-block';
-    closeCameraBtn.style.display = 'inline-block';
-    openCameraBtn.style.display = 'none';
+  // Resize canvas to match video resolution
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+  const ctx = canvas.getContext('2d');
 
-    /* ✅ Mirror the camera preview when using the FRONT camera */
-    if (!useBackCamera) {
-      cameraEl.style.transform = 'scaleX(-1)';
-    } else {
-      cameraEl.style.transform = 'scaleX(1)';
-    }
-
-    if (isMobile()) {
-      flipCameraBtn.style.display = 'inline-block';
-      flipCameraBtn.onclick = async () => {
-        useBackCamera = !useBackCamera;
-        stopCamera();
-        await openCameraBtn.click();
-      };
-    } else {
-      flipCameraBtn.style.display = 'none';
-    }
-
-  } catch (err) {
-    console.error(err);
-    alert('Camera not available or permission denied.');
+  // ✅ Mirror logic (fix orientation when using front camera)
+  if (!useBackCamera) {
+    ctx.translate(canvasWidth, 0);
+    ctx.scale(-1, 1);
   }
+
+  // Draw the video frame to the canvas
+  ctx.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+
+  // Reset transform
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  // ✅ Convert to image and set as the current img
+  const imageData = canvas.toDataURL('image/png');
+  img = new Image();
+  img.onload = async () => {
+    // stop camera preview
+    stopCamera();
+    cameraEl.style.display = 'none';
+    snapBtn.style.display = 'none';
+    closeCameraBtn.style.display = 'none';
+    flipCameraBtn.style.display = 'none';
+    openCameraBtn.style.display = 'inline-block';
+
+    // clear and redraw
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    points = [];
+    currentAttempt = null;
+    savedAttempts = [];
+    attemptCount = 0;
+    saveAttemptBtn.style.display = 'none';
+    clearResult();
+
+    // run segmentation for click masking
+    if (net) {
+      await doSegmentation(img);
+    }
+    setResult('Click 2 points: (1) Tragus, (2) C7');
+  };
+  img.src = imageData;
 });
 
 function stopCamera() {
@@ -855,6 +871,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
