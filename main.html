@@ -102,12 +102,13 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
   max-height: 50%;
   pointer-events: none;
   background: url('sideview-outline.png') center bottom / contain no-repeat;
-  opacity: 0.8;   /* adjust transparency */
+  opacity: 0.8;
 }
 
   /* small screens */
@@ -844,6 +845,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
