@@ -86,7 +86,6 @@
   aspect-ratio: 16 / 9; /* landscape ratio */
   overflow: hidden;
   border-radius: 12px;
-  background: #000;    /* optional, just to fill space */
 }
 
 #camera {
@@ -102,12 +101,12 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  height: 75vh; /* 75% of viewport height */
+  height: 75%;
   width: auto;
-  pointer-events: none;
   background: url('sideview-outline.png') center bottom / contain no-repeat;
   opacity: 0.8;
-  z-index: 9999;
+  pointer-events: none;
+  z-index: 10;
 }
 
 
@@ -845,6 +844,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
