@@ -503,37 +503,6 @@ closeCameraBtn.addEventListener('click', () => {
   openCameraBtn.style.display = 'inline-block';
 });
 
-snapBtn.addEventListener('click', () => {
-  const video = cameraEl;
-  const canvasWidth = video.videoWidth;
-  const canvasHeight = video.videoHeight;
-
-  // Resize canvas to match video resolution
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-
-  const ctx = canvas.getContext('2d');
-
-  // ✅ Mirror logic (fix orientation when using front camera)
-  if (!useBackCamera) {
-    ctx.translate(canvasWidth, 0);
-    ctx.scale(-1, 1);
-  }
-
-  // Draw the video frame to the canvas
-  ctx.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-
-  // Reset transform
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-  // Show result on screen (optional)
-  const imageData = canvas.toDataURL('image/png');
-  console.log("Captured image data:", imageData.substring(0, 50) + "...");
-
-});
-
-
-
 /* ======= Segmentation (BodyPix) ======= */
 async function doSegmentation(imgElement){
   try{
@@ -871,6 +840,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
