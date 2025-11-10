@@ -491,7 +491,6 @@ openCameraBtn.addEventListener("click", async () => {
   }
 });
 
-
 flipCameraBtn.addEventListener('click', () => {
   useBackCamera = !useBackCamera; // toggle camera direction
   stopCamera();                   // stop the current stream
@@ -781,7 +780,7 @@ resetImageBtn.addEventListener('click', ()=>{
     const avg = (sum/savedAttempts.length).toFixed(2);
     let label='';
     if(avg >= 55) label='Good posture';
-    else if(avg >= 45) label='At risk';
+    else if(avg >= 48) label='At risk';
     else label='Poor posture';
 
     // build summary object
@@ -904,6 +903,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
