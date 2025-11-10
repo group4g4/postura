@@ -438,16 +438,29 @@ function isMobile() {
 
 openCameraBtn.addEventListener("click", async () => {
   try {
-    // Ask permission first
-    await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    // Stop any currently running camera stream
+    if (window.currentStream) {
+      window.currentStream.getTracks().forEach(track => track.stop());
+    }
 
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter((d) => d.kind === "videoinput");
-
-    let constraints = {
+    // Define which camera to use (front or back)
+    const constraints = {
       audio: false,
-      video: {}
+      video: {
+        facingMode: window.useFront ? "user" : "environment"
+      }
     };
+
+    // Request access
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    window.currentStream = stream;
+    video.srcObject = stream;
+
+  } catch (err) {
+    console.error("Error accessing camera: ", err);
+    alert("Unable to access camera: " + err.message);
+  }
+});
 
     if (useBackCamera) {
       // Use rear camera, prefer normal (1x) if available
@@ -908,6 +921,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
