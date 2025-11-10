@@ -267,7 +267,16 @@ function getCanvasCoords(evt){
     y: Math.round((evt.clientY - rect.top) * scaleY)
   };
 }
-
+// Start button handler
+startBtn.addEventListener('click', () => {
+  frontPage.style.display = 'none';
+  mainApp.style.display = 'block';
+});
+  
+ logoLink.addEventListener('click', () => {
+    mainApp.style.display = 'none';
+    frontPage.style.display = 'block';
+  });
 /* draw base image, mask overlay, attempts and current points */
 function drawCanvas(){
   if(!img.src) { ctx.clearRect(0,0,canvas.width,canvas.height); return; }
@@ -921,6 +930,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
