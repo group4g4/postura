@@ -465,12 +465,17 @@ openCameraBtn.addEventListener("click", async () => {
         : { facingMode: "user" };
     }
 
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
 
     // Attach to video element
     cameraEl.srcObject = stream;
     await cameraEl.play();
-
+    // Mirror only for front camera
+    if (constraints.video.facingMode === "user" || /front/i.test(constraints.video.deviceId || "")) {
+      cameraEl.style.transform = "scaleX(-1)";
+    } else {
+      cameraEl.style.transform = "none";
+    }
     // Show/hide UI elements
     cameraEl.style.display = "block";
     snapBtn.style.display = "inline-block";
@@ -903,6 +908,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
