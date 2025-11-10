@@ -463,29 +463,13 @@ openCameraBtn.addEventListener("click", async () => {
     // Request access
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     window.currentStream = stream;
-    video.srcObject = stream;
+    cameraEl.srcObject = stream;
 
   } catch (err) {
     console.error("Error accessing camera: ", err);
     alert("Unable to access camera: " + err.message);
   }
 });
-
-    if (useBackCamera) {
-      // Use rear camera, prefer normal (1x) if available
-      const normalBack = videoDevices.find(
-        (d) => /back|rear/i.test(d.label) && !/0\.5|ultra/i.test(d.label)
-      );
-      constraints.video = normalBack
-        ? { deviceId: { exact: normalBack.deviceId } }
-        : { facingMode: "environment" };
-    } else {
-      // Use front camera
-      const frontCam = videoDevices.find((d) => /front|user/i.test(d.label));
-      constraints.video = frontCam
-        ? { deviceId: { exact: frontCam.deviceId } }
-        : { facingMode: "user" };
-    }
 
     stream = await navigator.mediaDevices.getUserMedia(constraints);
 
@@ -924,3 +908,4 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
