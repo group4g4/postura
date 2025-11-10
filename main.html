@@ -104,8 +104,6 @@
   opacity: 0.8;
   pointer-events: none;
   z-index: 10;
-  /* TEMPORARY TEST VISUAL: */
-  background-color: rgba(255, 0, 0, 0.2);
 }
 
   /* small screens */
@@ -490,19 +488,34 @@ closeCameraBtn.addEventListener('click', () => {
 });
 
 snapBtn.addEventListener('click', () => {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width;
-  const h = canvas.height;
+  const video = cameraEl;
+  const canvasWidth = video.videoWidth;
+  const canvasHeight = video.videoHeight;
 
-  /* ✅ Unmirror the final captured image so it's upright */
-  ctx.translate(w, 0);
-  ctx.scale(-1, 1);
-  ctx.drawImage(cameraEl, 0, 0, w, h);
+  // Resize canvas to match video resolution
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  const ctx = canvas.getContext('2d');
+
+  // ✅ Mirror logic (fix orientation when using front camera)
+  if (!useBackCamera) {
+    ctx.translate(canvasWidth, 0);
+    ctx.scale(-1, 1);
+  }
+
+  // Draw the video frame to the canvas
+  ctx.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+
+  // Reset transform
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 
+  // Show result on screen (optional)
   const imageData = canvas.toDataURL('image/png');
-  console.log("Captured:", imageData);
+  console.log("Captured image data:", imageData.substring(0, 50) + "...");
+
 });
+
 
 
 /* ======= Segmentation (BodyPix) ======= */
@@ -842,6 +855,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
