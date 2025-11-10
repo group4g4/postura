@@ -78,12 +78,15 @@
   .historyLeft{display:block}
   .historyTag{padding:6px 8px;border-radius:8px;font-weight:700}
   .divider{height:1px;background:#e0e0e0;margin:8px 0}
+  
 .camera-container {
   position: relative;
-  width: 360px;     /* you may adjust these to your design */
-  height: 480px;
+  width: 100%;         /* makes it responsive */
+  max-width: 640px;    /* adjust for your design */
+  aspect-ratio: 16 / 9; /* landscape ratio */
   overflow: hidden;
   border-radius: 12px;
+  background: #000;    /* optional, just to fill space */
 }
 
 #camera {
@@ -96,13 +99,15 @@
 /* PNG overlay */
 .overlay {
   position: absolute;
+  bottom: 0;
   top: 0;
   left: 0;
+  transform: translateX(-50%);
   width: 100%;
-  height: 100%;
+  height: auto;
   pointer-events: none;
-  background: url('sideview-outline.png') center/contain no-repeat;
-  opacity: 0.9;   /* adjust transparency */
+  background: url('sideview-outline.png') center bottom / contain no-repeat;
+  opacity: 0.8;   /* adjust transparency */
 }
 
   /* small screens */
@@ -839,6 +844,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
