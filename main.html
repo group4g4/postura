@@ -102,12 +102,14 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 300px;     /* test fixed size */
-  height: 150px;    /* test fixed size */
+  height: 75vh; /* 75% of viewport height */
+  width: auto;
+  pointer-events: none;
   background: url('sideview-outline.png') center bottom / contain no-repeat;
   opacity: 0.8;
-  pointer-events: none;
+  z-index: 9999;
 }
+
 
   /* small screens */
   @media(max-width:700px){
@@ -843,6 +845,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
