@@ -903,12 +903,6 @@ function loadHistory(){
 /* ======= Stop camera before unload ======= */
 window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forEach(t=>t.stop()); });
 
-/* ======= Front/Main navigation ======= */
-startBtn.addEventListener('click', ()=>{ frontPage.style.display='none'; mainApp.style.display='block'; loadHistory(); });
-logoLink.addEventListener('click', ()=>{ frontPage.style.display='block'; mainApp.style.display='none'; });
-
-function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'; }
-
 /* ======= Initialize (keep front visible) ======= */
 (function init(){
   canvas.width = 0; canvas.height = 0;
@@ -930,6 +924,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
