@@ -78,6 +78,32 @@
   .historyLeft{display:block}
   .historyTag{padding:6px 8px;border-radius:8px;font-weight:700}
   .divider{height:1px;background:#e0e0e0;margin:8px 0}
+.camera-container {
+  position: relative;
+  width: 360px;     /* you may adjust these to your design */
+  height: 480px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+#camera {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s;
+}
+
+/* PNG overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: url('sideview-outline.png') center/contain no-repeat;
+  opacity: 0.9;   /* adjust transparency */
+}
 
   /* small screens */
   @media(max-width:700px){
@@ -140,7 +166,10 @@
       </div>
 
       <div class="viewer" id="viewer">
-        <video id="camera" autoplay playsinline style="display:none"></video>
+        <div class="camera-container" style="display:none">
+          <video id="camera" autoplay playsinline></video>
+          <div class="overlay"></div>
+        </div> 
         <canvas id="canvas"></canvas>
         <div id="processingBox" class="processingBox">Processing…</div>
       </div>
@@ -404,48 +433,74 @@ upload.addEventListener('change', e=>{
 /* ======= Camera functions ======= */
 function isMobile(){ return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
 
-openCameraBtn.addEventListener('click', async ()=>{
-  try{
-    const constraints = isMobile() ? { video: { facingMode: useBackCamera ? { exact: "environment" } : "user" } } : { video: true };
+openCameraBtn.addEventListener('click', async () => {
+  try {
+    const constraints = isMobile()
+      ? { video: { facingMode: useBackCamera ? { exact: "environment" } : "user" } }
+      : { video: true };
+
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     cameraEl.srcObject = stream;
     cameraEl.style.display = 'block';
     snapBtn.style.display = 'inline-block';
     closeCameraBtn.style.display = 'inline-block';
     openCameraBtn.style.display = 'none';
-    if(isMobile()){
+
+    /* ✅ Mirror the camera preview when using the FRONT camera */
+    if (!useBackCamera) {
+      cameraEl.style.transform = 'scaleX(-1)';
+    } else {
+      cameraEl.style.transform = 'scaleX(1)';
+    }
+
+    if (isMobile()) {
       flipCameraBtn.style.display = 'inline-block';
-      flipCameraBtn.onclick = async ()=>{ useBackCamera = !useBackCamera; stopCamera(); await openCameraBtn.click(); };
-    } else flipCameraBtn.style.display = 'none';
-  }catch(err){
-    console.error(err); alert('Camera not available or permission denied.');
+      flipCameraBtn.onclick = async () => {
+        useBackCamera = !useBackCamera;
+        stopCamera();
+        await openCameraBtn.click();
+      };
+    } else {
+      flipCameraBtn.style.display = 'none';
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('Camera not available or permission denied.');
   }
 });
-function stopCamera(){
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+  }
+}
+
+closeCameraBtn.addEventListener('click', () => {
+  stopCamera();
   cameraEl.style.display = 'none';
   snapBtn.style.display = 'none';
   closeCameraBtn.style.display = 'none';
-  openCameraBtn.style.display = 'inline-block';
   flipCameraBtn.style.display = 'none';
-}
-closeCameraBtn.addEventListener('click', stopCamera);
-
-snapBtn.addEventListener('click', async ()=>{
-  if(!cameraEl.videoWidth) return;
-  canvas.width = cameraEl.videoWidth; canvas.height = cameraEl.videoHeight;
-  ctx.drawImage(cameraEl,0,0,canvas.width,canvas.height);
-  img = new Image();
-  img.src = canvas.toDataURL();
-  // reset state
-  segmentationMask = null; segmentationMeta = null; points = []; currentAttempt = null; saveAttemptBtn.style.display='none';
-  clearResult(); removeAngleLabelNodes();
-  showProcessing(true);
-  if(net) await doSegmentation(img);
-  showProcessing(false);
-  stopCamera();
-  setResult('Click 2 points: (1) Tragus, (2) C7');
+  openCameraBtn.style.display = 'inline-block';
 });
+
+snapBtn.addEventListener('click', () => {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+
+  /* ✅ Unmirror the final captured image so it's upright */
+  ctx.translate(w, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(cameraEl, 0, 0, w, h);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  const imageData = canvas.toDataURL('image/png');
+  console.log("Captured:", imageData);
+});
+
 
 /* ======= Segmentation (BodyPix) ======= */
 async function doSegmentation(imgElement){
@@ -784,5 +839,6 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
