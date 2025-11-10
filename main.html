@@ -445,64 +445,53 @@ function isMobile() {
   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
-openCameraBtn.addEventListener("click", async () => {
+openCameraBtn.addEventListener('click', async () => {
   try {
-    // Stop any currently running camera stream
-    if (window.currentStream) {
-      window.currentStream.getTracks().forEach(track => track.stop());
-    }
+    const constraints = isMobile()
+      ? { video: { facingMode: useBackCamera ? { exact: "environment" } : "user" } }
+      : { video: true };
 
-    // Define which camera to use (front or back)
-    const constraints = {
-      audio: false,
-      video: {
-        facingMode: window.useFront ? "user" : "environment"
-      }
-    };
-
-    // Request access
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    window.currentStream = stream;
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
     cameraEl.srcObject = stream;
 
-  } catch (err) {
-    console.error("Error accessing camera: ", err);
-    alert("Unable to access camera: " + err.message);
-  }
-});
-    // Attach to video element
-    cameraEl.srcObject = stream;
-    await cameraEl.play();
-    // Mirror only for front camera
-    if (constraints.video.facingMode === "user" || /front/i.test(constraints.video.deviceId || "")) {
-      cameraEl.style.transform = "scaleX(-1)";
-    } else {
-      cameraEl.style.transform = "none";
-    }
-    // Show/hide UI elements
-    cameraEl.style.display = "block";
-    snapBtn.style.display = "inline-block";
-    closeCameraBtn.style.display = "inline-block";
-    flipCameraBtn.style.display = isMobile() ? "inline-block" : "none";
-    openCameraBtn.style.display = "none";
+    // show the container AND the video
+    const container = cameraEl.parentElement; // camera-container
+    container.style.display = 'block';
+    cameraEl.style.display = 'block';
+    
+    snapBtn.style.display = 'inline-block';
+    closeCameraBtn.style.display = 'inline-block';
+    openCameraBtn.style.display = 'none';
 
-    // Mirror front camera directly in JS
-    if (useBackCamera) {
-      cameraEl.style.transform = "scaleX(1)";
+    if (!useBackCamera) cameraEl.style.transform = 'scaleX(-1)';
+    else cameraEl.style.transform = 'scaleX(1)';
+
+    if (isMobile()) {
+      flipCameraBtn.style.display = 'inline-block';
+      flipCameraBtn.onclick = async () => {
+        useBackCamera = !useBackCamera;
+        stopCamera();
+        await openCameraBtn.click();
+      };
     } else {
-      cameraEl.style.transform = "scaleX(-1)";
+      flipCameraBtn.style.display = 'none';
     }
 
   } catch (err) {
-    console.error("Camera access error:", err);
-    alert("Unable to access camera. Make sure you're using HTTPS and allowed permissions.");
+    console.error(err);
+    alert('Camera not available or permission denied.');
   }
 });
-
-flipCameraBtn.addEventListener('click', () => {
-  useBackCamera = !useBackCamera; // toggle camera direction
-  stopCamera();                   // stop the current stream
-  openCameraBtn.click();          // reopen camera with new facing mode
+  
+closeCameraBtn.addEventListener('click', () => {
+  stopCamera();
+  const container = cameraEl.parentElement; // camera-container
+  container.style.display = 'none';
+  cameraEl.style.display = 'none';
+  snapBtn.style.display = 'none';
+  closeCameraBtn.style.display = 'none';
+  flipCameraBtn.style.display = 'none';
+  openCameraBtn.style.display = 'inline-block';
 });
 
 snapBtn.addEventListener('click', () => {
@@ -905,5 +894,6 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
