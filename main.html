@@ -168,7 +168,7 @@
 
       <div class="viewer" id="viewer">
         <div class="camera-container">
-          <video id="camera" autoplay playsinline></video>
+          <video id="cameraEl" autoplay playsinline muted style="width:100%; height:auto;"></video>
           <div class="overlay"></div>
         </div> 
         <canvas id="canvas"></canvas>
@@ -438,50 +438,47 @@ function isMobile() {
 
 openCameraBtn.addEventListener("click", async () => {
   try {
-    // First, request access to get device labels
+    // Ask permission first
     await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 
     const devices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = devices.filter((d) => d.kind === "videoinput");
 
-    let selectedDeviceId = null;
+    let constraints = {
+      audio: false,
+      video: {}
+    };
 
     if (useBackCamera) {
-      // 📸 Rear camera — avoid 0.5x (ultra-wide)
-      const backCam =
-        videoDevices.find(
-          (d) => /back|rear/i.test(d.label) && !/0\.5|ultra|wide/i.test(d.label)
-        ) || videoDevices.find((d) => /back|rear/i.test(d.label));
-      selectedDeviceId = backCam ? backCam.deviceId : null;
+      // Use rear camera, prefer normal (1x) if available
+      const normalBack = videoDevices.find(
+        (d) => /back|rear/i.test(d.label) && !/0\.5|ultra/i.test(d.label)
+      );
+      constraints.video = normalBack
+        ? { deviceId: { exact: normalBack.deviceId } }
+        : { facingMode: "environment" };
     } else {
-      // 🤳 Front camera
-      const frontCam =
-        videoDevices.find((d) => /front|user/i.test(d.label)) ||
-        videoDevices[0];
-      selectedDeviceId = frontCam ? frontCam.deviceId : null;
+      // Use front camera
+      const frontCam = videoDevices.find((d) => /front|user/i.test(d.label));
+      constraints.video = frontCam
+        ? { deviceId: { exact: frontCam.deviceId } }
+        : { facingMode: "user" };
     }
 
-    // If we can’t identify a camera, fallback to facingMode
-    const constraints = selectedDeviceId
-      ? { video: { deviceId: { exact: selectedDeviceId } }, audio: false }
-      : {
-          video: { facingMode: useBackCamera ? "environment" : "user" },
-          audio: false,
-        };
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-    // Start the selected stream
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    // Attach to video element
     cameraEl.srcObject = stream;
-    await cameraEl.play(); // ensure playback starts
+    await cameraEl.play();
 
-    // Show controls
+    // Show/hide UI elements
     cameraEl.style.display = "block";
     snapBtn.style.display = "inline-block";
     closeCameraBtn.style.display = "inline-block";
     flipCameraBtn.style.display = isMobile() ? "inline-block" : "none";
     openCameraBtn.style.display = "none";
 
-    // Mirror the front camera view
+    // Mirror front camera directly in JS
     if (useBackCamera) {
       cameraEl.style.transform = "scaleX(1)";
     } else {
@@ -490,11 +487,10 @@ openCameraBtn.addEventListener("click", async () => {
 
   } catch (err) {
     console.error("Camera access error:", err);
-    alert(
-      "Unable to access camera. Please allow permission or check browser settings."
-    );
+    alert("Unable to access camera. Make sure you're using HTTPS and allowed permissions.");
   }
 });
+
 
 flipCameraBtn.addEventListener('click', () => {
   useBackCamera = !useBackCamera; // toggle camera direction
@@ -908,6 +904,7 @@ function goBack(){ frontPage.style.display='block'; mainApp.style.display='none'
   
 </body>
 </html>
+
 
 
 
