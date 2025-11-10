@@ -470,9 +470,6 @@ openCameraBtn.addEventListener("click", async () => {
     alert("Unable to access camera: " + err.message);
   }
 });
-
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
-
     // Attach to video element
     cameraEl.srcObject = stream;
     await cameraEl.play();
@@ -908,4 +905,5 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
