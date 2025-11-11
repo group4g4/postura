@@ -10,13 +10,13 @@
       font-family: "Poppins", sans-serif;
       background: linear-gradient(135deg, #fffbea, #fff5d7);
       margin: 0;
-      padding: 0;
+      padding: 40px 0; /* Adds space around content */
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
+      justify-content: flex-start; /* Start instead of center for scroll */
+      min-height: 100vh; /* Allow more than full height */
+      overflow-y: auto; /* Enable vertical scrolling */
     }
 
     .container {
