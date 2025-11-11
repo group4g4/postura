@@ -61,6 +61,11 @@
       font-size: 15px;
     }
 
+    .button-group {
+      text-align: center;
+      margin-top: 20px;
+    }
+
     button {
       background-color: #fbc02d;
       border: none;
@@ -70,7 +75,7 @@
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      margin-top: 20px;
+      margin: 5px; /* space between buttons */
     }
 
     button:hover {
@@ -127,14 +132,16 @@
       <label for="agreeCheckbox">Agree and Continue</label>
     </div>
 
-    <div style="text-align: center;">
+    <div class="button-group">
       <button id="enterBtn" disabled>Continue</button>
+      <button id="backBtn">Back</button>
     </div>
   </div>
 
   <script>
     const checkbox = document.getElementById('agreeCheckbox');
     const enterBtn = document.getElementById('enterBtn');
+    const backBtn = document.getElementById('backBtn');
 
     checkbox.addEventListener('change', () => {
       enterBtn.disabled = !checkbox.checked;
@@ -143,6 +150,10 @@
     enterBtn.addEventListener('click', () => {
       localStorage.setItem('agreedToTerms', 'true');
       window.location.href = 'main.html';
+    });
+
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
     });
   </script>
 </body>
