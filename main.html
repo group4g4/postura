@@ -136,6 +136,7 @@
       </div>
       <div style="margin-top:10px">
         <button id="startBtn">Start</button>
+        <button id="backBtn" class="secondary" style="margin-left:10px;">Back to Terms and Conditions</button>
       </div>
       <div style="margin-top:14px">
         <!-- preview of recent result if any -->
@@ -172,7 +173,6 @@
         </div> 
         <div style="text-align:center; margin-top:10px;">
           <button id="snapBtn" class="secondary" style="display:none">Capture</button>
-          <button id="backBtn" class="secondary" style="margin-left:10px;">Back to Terms</button>
         </div>
         <canvas id="canvas"></canvas>
         <div id="processingBox" class="processingBox">Processing…</div>
@@ -253,7 +253,11 @@ let useBackCamera = true;
 /* persistent history across images (stored as array of summaries) */
 const LS_HISTORY_KEY = 'posturaHistoryData';
 let globalHistory = [];
-
+  
+function goBack() {
+    mainApp.style.display = 'none';
+    frontPage.style.display = 'block';
+}
 /* ======= helpers ======= */
 function showProcessing(show){
   if(show) processingBox.classList.add('show'); else processingBox.classList.remove('show');
@@ -314,7 +318,10 @@ function drawCanvas(){
       }
     }catch(e){ console.warn('mask overlay error',e); }
   }
-  
+  const backBtn = document.getElementById('backBtn');
+  backBtn.addEventListener('click', () => {
+    window.location.href = 'index.html'; // or your Terms page
+  });
   const backBtn = document.getElementById('backBtn');
   backBtn.addEventListener('click', () => {
     // Optional: clear localStorage if you want to force re-agreement
@@ -903,6 +910,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
