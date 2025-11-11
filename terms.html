@@ -22,48 +22,54 @@
     .container {
       background: white;
       width: 90%;
-      max-width: 600px;
+      max-width: 650px;
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
       text-align: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .logo img {
-      height: 60px;
-      margin-right: 10px;
-    }
-
-    h1, h2 {
       color: #b48a00;
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+
+    h2 {
+      color: #b48a00;
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 8px;
     }
 
     p {
       text-align: justify;
       line-height: 1.6;
       color: #444;
+      margin: 0 0 12px 0;
     }
 
     .checkbox {
-      margin: 20px 0;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    label {
+      font-weight: 500;
+      color: #333;
+      font-size: 15px;
     }
 
     button {
       background-color: #fbc02d;
       border: none;
       color: white;
-      padding: 12px 24px;
+      padding: 12px 30px;
       font-size: 16px;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin-top: 20px;
     }
 
     button:hover {
@@ -78,26 +84,51 @@
 </head>
 <body>
   <div class="container">
-    <div class="logo">
-      <img src="logo.png" alt="Postura Logo">
-      <h1>POSTURA</h1>
-    </div>
-    <h2>Terms and Conditions</h2>
+    <h1>Terms and Conditions of Use</h1>
+
+    <p>By using the Postura app, users agree to the following terms:</p>
+
+    <h2>Purpose & Use</h2>
     <p>
-      Welcome to Postura! Before proceeding, please read and agree to the following terms:
-      <br><br>
-      • Postura is a posture analysis tool intended for educational and personal use.<br>
-      • Any results or measurements are for guidance only and not for medical diagnosis.<br>
-      • Uploaded photos remain in your local browser and are not stored on our servers.<br>
-      • By continuing, you agree to use this tool responsibly and respect data privacy.
+      Postura is a tool designed for personal and educational posture analysis. 
+      Results are for guidance only and do not constitute a medical diagnosis. 
+      Users are advised to consult a licensed physical therapist or orthopedic 
+      specialist for a full evaluation.
+    </p>
+
+    <h2>Content & Ownership</h2>
+    <p>
+      All features, designs, and content within the app are the property of 
+      Postura and are protected by applicable laws.
+    </p>
+
+    <h2>Data & Privacy</h2>
+    <p>
+      Uploaded photos are processed locally on the device and are not stored on 
+      Postura servers. No personal information is collected or shared by the app.
+    </p>
+
+    <h2>Liability</h2>
+    <p>
+      While Postura strives to provide accurate information, no warranties are 
+      made regarding completeness or reliability. Users are responsible for how 
+      they use the app.
+    </p>
+
+    <h2>Updates & Changes</h2>
+    <p>
+      These terms may be updated occasionally. Continued use of the app indicates 
+      acceptance of the latest terms.
     </p>
 
     <div class="checkbox">
       <input type="checkbox" id="agreeCheckbox"> 
-      <label for="agreeCheckbox"> I have read and agree to the Terms and Conditions.</label>
+      <label for="agreeCheckbox">Agree and Continue</label>
     </div>
 
-    <button id="enterBtn" disabled>Enter Postura</button>
+    <div style="text-align: center;">
+      <button id="enterBtn" disabled>Continue</button>
+    </div>
   </div>
 
   <script>
