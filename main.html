@@ -279,7 +279,10 @@ startBtn.addEventListener('click', () => {
   frontPage.style.display = 'none';
   mainApp.style.display = 'block';
 });
-  
+ const backBtn = document.getElementById('backBtn');
+  backBtn.addEventListener('click', () => {
+    window.location.href = 'index.html'; // or your Terms page
+  }); 
  logoLink.addEventListener('click', () => {
     mainApp.style.display = 'none';
     frontPage.style.display = 'block';
@@ -318,16 +321,7 @@ function drawCanvas(){
       }
     }catch(e){ console.warn('mask overlay error',e); }
   }
-  const backBtn = document.getElementById('backBtn');
-  backBtn.addEventListener('click', () => {
-    window.location.href = 'index.html'; // or your Terms page
-  });
-  const backBtn = document.getElementById('backBtn');
-  backBtn.addEventListener('click', () => {
-    // Optional: clear localStorage if you want to force re-agreement
-    // localStorage.removeItem('agreedToTerms');
-    window.location.href = 'index.html'; // or the correct file name of your Terms page
-  });
+  
   // draw saved attempts
   savedAttempts.forEach((s,i)=>{
     if(s.points){
@@ -910,6 +904,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
