@@ -156,7 +156,6 @@
           <button id="openCameraBtn">Open Camera</button>
           <button id="flipCameraBtn" class="secondary" style="display:none">Flip Camera</button>
           <button id="closeCameraBtn" class="secondary" style="display:none">Close Camera</button>
-          <button id="snapBtn" class="secondary" style="display:none">Capture</button>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
           <button id="resetPointsBtn" class="secondary">Reset Points</button>
@@ -171,6 +170,9 @@
           <video id="cameraEl" autoplay playsinline muted style="width:100%; height:auto;"></video>
           <div class="overlay"></div>
         </div> 
+        <div style="text-align:center; margin-top:10px;">
+          <button id="snapBtn" class="secondary" style="display:none">Capture</button>
+        </div>
         <canvas id="canvas"></canvas>
         <div id="processingBox" class="processingBox">Processing…</div>
       </div>
@@ -894,6 +896,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
