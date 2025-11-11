@@ -454,47 +454,46 @@ upload.addEventListener('change', e=>{
 function isMobile() {
   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
+
 let currentStream;
 let usingFrontCamera = true;
 
 openCameraBtn.addEventListener('click', async () => {
-    try {
-        if (currentStream) {
-            currentStream.getTracks().forEach(track => track.stop());
-        }
-
-        const constraints = {
-            video: {
-                facingMode: usingFrontCamera ? "user" : "environment"
-            }
-        };
-
-        currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-        cameraEl.srcObject = currentStream;
-        await cameraEl.play();
-    } catch (err) {
-        console.error("Error accessing camera:", err);
+  try {
+    // Stop any existing stream
+    if (currentStream) {
+      currentStream.getTracks().forEach(track => track.stop());
     }
-});
 
+    // Choose camera direction
+    const constraints = {
+      video: {
+        facingMode: usingFrontCamera ? "user" : "environment"
+      }
+    };
 
-    // show the container AND the video
+    // Start camera
+    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    cameraEl.srcObject = currentStream;
+    await cameraEl.play();
+
+    // Show camera interface elements
     const container = cameraEl.parentElement; // camera-container
     container.style.display = 'block';
     cameraEl.style.display = 'block';
-    
+
     snapBtn.style.display = 'inline-block';
     closeCameraBtn.style.display = 'inline-block';
     openCameraBtn.style.display = 'none';
 
-    if (!useBackCamera) cameraEl.style.transform = 'scaleX(-1)';
-    else cameraEl.style.transform = 'scaleX(1)';
+    if (!usingFrontCamera) cameraEl.style.transform = 'scaleX(1)';
+    else cameraEl.style.transform = 'scaleX(-1)';
 
     if (isMobile()) {
       flipCameraBtn.style.display = 'inline-block';
       flipCameraBtn.onclick = async () => {
-        useBackCamera = !useBackCamera;
-        stopCamera();
+        usingFrontCamera = !usingFrontCamera;
+        currentStream.getTracks().forEach(track => track.stop());
         await openCameraBtn.click();
       };
     } else {
@@ -502,8 +501,8 @@ openCameraBtn.addEventListener('click', async () => {
     }
 
   } catch (err) {
-    console.error(err);
-    alert('Camera not available or permission denied.');
+    console.error("Error accessing camera:", err);
+    alert("Camera not available or permission denied.");
   }
 });
   
@@ -918,6 +917,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
