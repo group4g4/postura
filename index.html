@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Postura | Terms & Conditions</title>
+  <title>Postura | Welcome</title>
   <link rel="icon" href="logo.png" type="image/png">
   <style>
     body {
@@ -27,14 +27,6 @@
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .hidden {
-      opacity: 0;
-      transform: scale(0.95);
-      pointer-events: none;
-      position: absolute;
     }
 
     .logo {
@@ -54,18 +46,9 @@
       margin-bottom: 10px;
     }
 
-    h2 {
-      color: #b48a00;
-    }
-
     p {
-      text-align: justify;
-      line-height: 1.6;
       color: #444;
-    }
-
-    .checkbox {
-      margin: 20px 0;
+      line-height: 1.6;
     }
 
     button {
@@ -77,76 +60,23 @@
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin-top: 15px;
     }
 
     button:hover {
       background-color: #f9a825;
     }
-
-    button:disabled {
-      background-color: #ddd;
-      cursor: not-allowed;
-    }
   </style>
 </head>
 <body>
-  <!-- Welcome Page -->
-  <div class="container" id="welcomePage">
+  <div class="container">
     <div class="logo">
       <img src="logo.png" alt="Postura Logo">
       <h1>POSTURA</h1>
     </div>
     <p>Welcome to Postura! A posture analysis tool designed to help you maintain your best form.</p>
-    <button id="startBtn">Start</button>
+    <button onclick="window.location.href='terms.html'">Start</button>
   </div>
-
-  <!-- Terms and Conditions Page -->
-  <div class="container hidden" id="termsPage">
-    <div class="logo">
-      <img src="logo.png" alt="Postura Logo">
-      <h1>POSTURA</h1>
-    </div>
-    <h2>Terms and Conditions</h2>
-    <p>
-      Welcome to Postura! Before proceeding, please read and agree to the following terms:
-      <br><br>
-      • Postura is a posture analysis tool intended for educational and personal use.<br>
-      • Any results or measurements are for guidance only and not for medical diagnosis.<br>
-      • Uploaded photos remain in your local browser and are not stored on our servers.<br>
-      • By continuing, you agree to use this tool responsibly and respect data privacy.
-    </p>
-
-    <div class="checkbox">
-      <input type="checkbox" id="agreeCheckbox"> 
-      <label for="agreeCheckbox"> I have read and agree to the Terms and Conditions.</label>
-    </div>
-
-    <button id="enterBtn" disabled>Enter Postura</button>
-  </div>
-
-  <script>
-    const startBtn = document.getElementById('startBtn');
-    const welcomePage = document.getElementById('welcomePage');
-    const termsPage = document.getElementById('termsPage');
-    const checkbox = document.getElementById('agreeCheckbox');
-    const enterBtn = document.getElementById('enterBtn');
-
-    // When "Start" is clicked, show Terms and Conditions
-    startBtn.addEventListener('click', () => {
-      welcomePage.classList.add('hidden');
-      termsPage.classList.remove('hidden');
-    });
-
-    // Enable Enter button when checkbox is checked
-    checkbox.addEventListener('change', () => {
-      enterBtn.disabled = !checkbox.checked;
-    });
-
-    // Save agreement and redirect
-    enterBtn.addEventListener('click', () => {
-      localStorage.setItem('agreedToTerms', 'true');
-      window.location.href = 'main.html';
-    });
-  </script>
 </body>
 </html>
+
