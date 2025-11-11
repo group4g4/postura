@@ -454,10 +454,7 @@ upload.addEventListener('change', e=>{
 function isMobile() {
   return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
-
-openCameraBtn.addEventListener('click', async () => {
-  try {
-    let currentStream;
+let currentStream;
 let usingFrontCamera = true;
 
 openCameraBtn.addEventListener('click', async () => {
@@ -479,6 +476,7 @@ openCameraBtn.addEventListener('click', async () => {
         console.error("Error accessing camera:", err);
     }
 });
+
 
     // show the container AND the video
     const container = cameraEl.parentElement; // camera-container
@@ -920,6 +918,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
