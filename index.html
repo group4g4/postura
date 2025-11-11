@@ -16,6 +16,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     .container {
@@ -26,6 +27,14 @@
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      position: absolute;
     }
 
     .logo {
@@ -43,6 +52,10 @@
     h1 {
       color: #b48a00;
       margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #b48a00;
     }
 
     p {
@@ -77,7 +90,18 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- Welcome Page -->
+  <div class="container" id="welcomePage">
+    <div class="logo">
+      <img src="logo.png" alt="Postura Logo">
+      <h1>POSTURA</h1>
+    </div>
+    <p>Welcome to Postura! A posture analysis tool designed to help you maintain your best form.</p>
+    <button id="startBtn">Start</button>
+  </div>
+
+  <!-- Terms and Conditions Page -->
+  <div class="container hidden" id="termsPage">
     <div class="logo">
       <img src="logo.png" alt="Postura Logo">
       <h1>POSTURA</h1>
@@ -101,14 +125,25 @@
   </div>
 
   <script>
+    const startBtn = document.getElementById('startBtn');
+    const welcomePage = document.getElementById('welcomePage');
+    const termsPage = document.getElementById('termsPage');
     const checkbox = document.getElementById('agreeCheckbox');
-    const button = document.getElementById('enterBtn');
+    const enterBtn = document.getElementById('enterBtn');
 
-    checkbox.addEventListener('change', () => {
-      button.disabled = !checkbox.checked;
+    // When "Start" is clicked, show Terms and Conditions
+    startBtn.addEventListener('click', () => {
+      welcomePage.classList.add('hidden');
+      termsPage.classList.remove('hidden');
     });
 
-    button.addEventListener('click', () => {
+    // Enable Enter button when checkbox is checked
+    checkbox.addEventListener('change', () => {
+      enterBtn.disabled = !checkbox.checked;
+    });
+
+    // Save agreement and redirect
+    enterBtn.addEventListener('click', () => {
       localStorage.setItem('agreedToTerms', 'true');
       window.location.href = 'main.html';
     });
