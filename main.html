@@ -689,12 +689,7 @@ canvas.addEventListener('click', (e)=>{
     // classification thresholds
     let remarkText='', remarkClass='';
     if(angle >= 55){
-      remarkText = 'Posture within a healthy range. 
-        Tips:
-          Keep screens at eye level
-          Take mobility breaks every 45–60 minutes
-          Maintain neutral sitting and standing positions
-';
+      remarkText = 'Posture within a healthy range.';
       remarkClass = 'good';
     } else if(angle >= 45){
       remarkText = 'Mild forward head posture detected.';
@@ -916,6 +911,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
