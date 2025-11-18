@@ -687,17 +687,54 @@ canvas.addEventListener('click', (e)=>{
     const angle = chosenAngle;
 
     // classification thresholds
-    let remarkText='', remarkClass='';
-    if(angle >= 55){
-      remarkText = 'Posture within a healthy range.';
-      remarkClass = 'good';
-    } else if(angle >= 45){
-      remarkText = 'Mild forward head posture detected.';
-      remarkClass = 'atrisk';
-    } else {
-      remarkText = 'Significant forward head posture detected.';
-      remarkClass = 'poor';
-    }
+let remarkText = '', remarkClass = '';
+
+if (angle >= 55) {
+    remarkClass = 'good';
+    remarkText = `
+<h3>GOOD</h3>
+<p>Your posture is healthy, with minimal forward head shift.</p>
+
+<strong>Tips:</strong>
+<ul>
+  <li>Keep screens at eye level</li>
+  <li>Take mobility breaks every 45–60 minutes</li>
+  <li>Maintain neutral sitting and standing positions</li>
+</ul>
+`;
+} else if (angle >= 45) {
+    remarkClass = 'atrisk';
+    remarkText = `
+<h3>AT RISK</h3>
+<p>Mild forward head positioning is detected, which may cause tension if not corrected.</p>
+
+<strong>Tips:</strong>
+<ul>
+  <li>Chin tucks: 10–12 reps</li>
+  <li>Upper trapezius and chest stretches: 20–30 seconds</li>
+  <li>Wall angels or scapular retractions: 10–12 reps</li>
+  <li>Adjust monitor to eye level; use lumbar support</li>
+</ul>
+`;
+} else {
+    remarkClass = 'poor';
+    remarkText = `
+<h3>POOR POSTURE</h3>
+<p>Significant forward head posture is present, increasing strain on the neck and upper back.</p>
+
+<strong>Tips:</strong>
+<ul>
+  <li>Chin tucks with hold: 3–5 seconds</li>
+  <li>Deep neck flexor strengthening: 10-second holds</li>
+  <li>Suboccipital release: 1–2 minutes</li>
+  <li>Chest stretches: 30–40 seconds</li>
+  <li>Keep devices at eye height; use a firm, supportive chair</li>
+</ul>
+
+<p><em>Note: If you experience persistent discomfort or pain, consider consulting a healthcare or posture professional for personalized guidance.</em></p>
+`;
+}
+
     angleValDiv.textContent = `CVA: ${angle.toFixed(2)}°`;
     remarkDiv.textContent = remarkText;
     remarkDiv.className = remarkClass;
@@ -911,6 +948,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
