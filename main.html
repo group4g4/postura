@@ -687,50 +687,55 @@ canvas.addEventListener('click', (e)=>{
     const angle = chosenAngle;
 
 // classification thresholds
-let remarkText = '', remarkClass = '';
+    let remarkText = '', remarkClass = '';
 
-if (angle >= 55) {
-    remarkClass = 'good';
-    remarkText = `GOOD
-Your posture is healthy, with minimal forward head shift.
-
-Tips:
-  Keep screens at eye level
-  Take mobility breaks every 45–60 minutes
-  Maintain neutral sitting and standing positions
-    `;
-} else if (angle >= 45) {
-    remarkClass = 'atrisk';
-    remarkText = `
-AT RISK
-Mild forward head positioning is detected, which may cause tension if not corrected.
-
-Tips:
-
-  Chin tucks: 10–12 reps
-  Upper trapezius and chest stretches: 20–30 seconds
-  Wall angels or scapular retractions: 10–12 reps
-  Adjust monitor to eye level; use lumbar support
-
-    `;
-} else {
-    remarkClass = 'poor';
-    remarkText = `
-POOR POSTURE
-Significant forward head posture is present, increasing strain on the neck and upper back.
-
-Tips:
-  Chin tucks with hold: 3–5 seconds
-  Deep neck flexor strengthening: 10-second holds
-  Suboccipital release: 1–2 minutes
-  Chest stretches: 30–40 seconds
-  Keep devices at eye height; use a firm, supportive chair
-  Note: If you experience persistent discomfort or pain, consider consulting a healthcare or posture professional.</em></p>
-    `;
-}
+    if (angle >= 55) {
+        remarkClass = 'good';
+        // Corrected: Uses proper HTML tags for structure
+        remarkText = `
+<H3>GOOD</H3>
+<p>Your posture is healthy, with minimal forward head shift.</p>
+<strong>Tips:</strong>
+<ul>
+  <li>Keep screens at eye level</li>
+  <li>Take mobility breaks every 45–60 minutes</li>
+  <li>Maintain neutral sitting and standing positions</li>
+</ul>
+        `;
+    } else if (angle >= 45) {
+        remarkClass = 'atrisk';
+        // Corrected: Uses proper HTML tags for structure
+        remarkText = `
+<H3>AT RISK</H3>
+<p>Mild forward head positioning is detected, which may cause tension if not corrected.</p>
+<strong>Tips:</strong>
+<ul>
+  <li>Chin tucks: 10–12 reps</li>
+  <li>Upper trapezius and chest stretches: 20–30 seconds</li>
+  <li>Wall angels or scapular retractions: 10–12 reps</li>
+  <li>Adjust monitor to eye level; use lumbar support</li>
+</ul>
+        `;
+    } else {
+        remarkClass = 'poor';
+        // Corrected: Uses proper HTML tags for structure and removes the erroneous </em></p>
+        remarkText = `
+<H3>POOR POSTURE</H3>
+<p>Significant forward head posture is present, increasing strain on the neck and upper back.</p>
+<strong>Tips:</strong>
+<ul>
+  <li>Chin tucks with hold: 3–5 seconds</li>
+  <li>Deep neck flexor strengthening: 10-second holds</li>
+  <li>Suboccipital release: 1–2 minutes</li>
+  <li>Chest stretches: 30–40 seconds</li>
+  <li>Keep devices at eye height; use a firm, supportive chair</li>
+</ul>
+<em>Note: If you experience persistent discomfort or pain, consider consulting a healthcare or posture professional.</em>
+        `;
+    }
 
     angleValDiv.textContent = `CVA: ${angle.toFixed(2)}°`;
-    remarkDiv.innerHTML = remarkText;
+    remarkDiv.innerHTML = remarkText; // <--- This line is now correct, as remarkText is HTML
     remarkDiv.className = remarkClass;
 
     setResult(`Click "Save Attempt" if satisfied or "Reset Points" to try again.`);
@@ -942,6 +947,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
