@@ -736,7 +736,7 @@ if (angle >= 55) {
 }
 
     angleValDiv.textContent = `CVA: ${angle.toFixed(2)}°`;
-    remarkDiv.textContent = remarkText;
+    remarkDiv.innerHTML = remarkText;
     remarkDiv.className = remarkClass;
 
     setResult(`Click "Save Attempt" if satisfied or "Reset Points" to try again.`);
@@ -948,6 +948,7 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
 
 
