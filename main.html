@@ -238,8 +238,7 @@ let stream = null;
 let points = []; // click buffer [p1,p2]
 let currentAttempt = null;
 let savedAttempts = []; // holds attempts for current image
-let attemptCount = 0;
-const maxAttempts = 3;
+
 const attemptColors = ["#f44336","#4caf50","#2196f3"];
 
 let useBackCamera = true;
@@ -749,13 +748,6 @@ canvas.addEventListener('click', (e)=>{
 });
 
 /* ======= Save attempt & history ======= */
-saveAttemptBtn.addEventListener('click', ()=>{
-  if(!currentAttempt) return;
-  if(attemptCount >= maxAttempts){
-    setResult("<span class='warning'>⚠️ Maximum attempts reached.</span>");
-    saveAttemptBtn.style.display='none';
-    return;
-  }
   savedAttempts.push(currentAttempt);
   const idx = savedAttempts.length - 1;
   // redraw saved attempt overlay in color
@@ -771,7 +763,7 @@ saveAttemptBtn.addEventListener('click', ()=>{
   left.innerHTML = `<div><strong>Attempt ${idx+1}</strong>: ${currentAttempt.angle}°</div><div style="font-size:0.95rem;margin-top:6px;color:#555">${currentAttempt.remarkText}</div>`;
   const tag = document.createElement('div');
   tag.className = 'historyTag';
-  tag.textContent = currentAttempt.remarkText.includes('Posture') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
+  tag.textContent = currentAttempt.remarkText.includes('Your') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
   // color tag
   if(currentAttempt.remarkClass === 'good') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
   else if(currentAttempt.remarkClass === 'atrisk') tag.style.background = '#fff8e1', tag.style.color = '#ff9800';
@@ -782,8 +774,6 @@ saveAttemptBtn.addEventListener('click', ()=>{
   historyPanel.prepend(card);
   historyCount.textContent = historyPanel.children.length;
 
-  // also do not persist to global history until user resets image (so history represents previous images).
-  attemptCount++;
   currentAttempt = null;
   saveAttemptBtn.style.display='none';
   setResult(`Saved attempt ${idx+1}.`);
@@ -793,21 +783,7 @@ saveAttemptBtn.addEventListener('click', ()=>{
   drawCanvas();
   angleValDiv.textContent = '';
   remarkDiv.textContent = '';
-  // if hit max attempts compute average
-  if(attemptCount >= maxAttempts) computeAverage();
 });
-
-/* ======= Compute average for current image ======= */
-function computeAverage(){
-  if(savedAttempts.length === 0) return;
-  const sum = savedAttempts.reduce((acc,o)=>acc+o.angle,0);
-  const avg = (sum/savedAttempts.length).toFixed(2);
-  let label='';
-  if(avg >= 55) label='Good posture';
-  else if(avg >= 45) label='At risk';
-  else label='Poor posture';
-  setResult(`<b>Average CVA: ${avg}°</b> — ${label}`);
-}
 
 /* ======= Reset Points (keeps image+overlay+saved attempts) ======= */
 resetPointsBtn.addEventListener('click', ()=>{
