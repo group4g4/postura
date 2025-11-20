@@ -86,7 +86,7 @@
   max-width: 820px;
 }
 
-#camera {
+#cameraEl {
   width: 100%;
   height: auto;
   display: block;
@@ -238,8 +238,7 @@ let stream = null;
 let points = []; // click buffer [p1,p2]
 let currentAttempt = null;
 let savedAttempts = []; // holds attempts for current image
-let attemptCount = 0;
-const maxAttempts = 3;
+
 const attemptColors = ["#f44336","#4caf50","#2196f3"];
 
 let useBackCamera = true;
@@ -775,8 +774,6 @@ canvas.addEventListener('click', (e)=>{
   historyPanel.prepend(card);
   historyCount.textContent = historyPanel.children.length;
 
-  // also do not persist to global history until user resets image (so history represents previous images).
-  attemptCount++;
   currentAttempt = null;
   saveAttemptBtn.style.display='none';
   setResult(`Saved attempt ${idx+1}.`);
@@ -786,9 +783,7 @@ canvas.addEventListener('click', (e)=>{
   drawCanvas();
   angleValDiv.textContent = '';
   remarkDiv.textContent = '';
-  // if hit max attempts compute average
-  if(attemptCount >= maxAttempts) computeAverage();
-});
+
 
 /* ======= Compute average for current image ======= */
 function computeAverage(){
@@ -940,29 +935,3 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
