@@ -238,7 +238,8 @@ let stream = null;
 let points = []; // click buffer [p1,p2]
 let currentAttempt = null;
 let savedAttempts = []; // holds attempts for current image
-
+let attemptCount = 0;
+const maxAttempts = 3;
 const attemptColors = ["#f44336","#4caf50","#2196f3"];
 
 let useBackCamera = true;
@@ -774,6 +775,8 @@ canvas.addEventListener('click', (e)=>{
   historyPanel.prepend(card);
   historyCount.textContent = historyPanel.children.length;
 
+  // also do not persist to global history until user resets image (so history represents previous images).
+  attemptCount++;
   currentAttempt = null;
   saveAttemptBtn.style.display='none';
   setResult(`Saved attempt ${idx+1}.`);
@@ -783,7 +786,21 @@ canvas.addEventListener('click', (e)=>{
   drawCanvas();
   angleValDiv.textContent = '';
   remarkDiv.textContent = '';
+  // if hit max attempts compute average
+  if(attemptCount >= maxAttempts) computeAverage();
 });
+
+/* ======= Compute average for current image ======= */
+function computeAverage(){
+  if(savedAttempts.length === 0) return;
+  const sum = savedAttempts.reduce((acc,o)=>acc+o.angle,0);
+  const avg = (sum/savedAttempts.length).toFixed(2);
+  let label='';
+  if(avg >= 55) label='Good posture';
+  else if(avg >= 45) label='At risk';
+  else label='Poor posture';
+  setResult(`<b>Average CVA: ${avg}°</b> — ${label}`);
+}
 
 /* ======= Reset Points (keeps image+overlay+saved attempts) ======= */
 resetPointsBtn.addEventListener('click', ()=>{
@@ -923,5 +940,3 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
-
-
