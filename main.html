@@ -238,7 +238,8 @@ let stream = null;
 let points = []; // click buffer [p1,p2]
 let currentAttempt = null;
 let savedAttempts = []; // holds attempts for current image
-
+let attemptCount = 0;
+const maxAttempts = 20;
 const attemptColors = ["#f44336","#4caf50","#2196f3"];
 
 let useBackCamera = true;
@@ -748,6 +749,13 @@ canvas.addEventListener('click', (e)=>{
 });
 
 /* ======= Save attempt & history ======= */
+saveAttemptBtn.addEventListener('click', ()=>{
+  if(!currentAttempt) return;
+  if(attemptCount >= maxAttempts){
+    setResult("<span class='warning'>⚠️ Maximum attempts reached.</span>");
+    saveAttemptBtn.style.display='none';
+    return;
+  }
   savedAttempts.push(currentAttempt);
   const idx = savedAttempts.length - 1;
   // redraw saved attempt overlay in color
@@ -774,6 +782,8 @@ canvas.addEventListener('click', (e)=>{
   historyPanel.prepend(card);
   historyCount.textContent = historyPanel.children.length;
 
+  // also do not persist to global history until user resets image (so history represents previous images).
+  attemptCount++;
   currentAttempt = null;
   saveAttemptBtn.style.display='none';
   setResult(`Saved attempt ${idx+1}.`);
@@ -784,6 +794,7 @@ canvas.addEventListener('click', (e)=>{
   angleValDiv.textContent = '';
   remarkDiv.textContent = '';
 });
+
 
 /* ======= Reset Points (keeps image+overlay+saved attempts) ======= */
 resetPointsBtn.addEventListener('click', ()=>{
