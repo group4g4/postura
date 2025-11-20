@@ -749,6 +749,13 @@ canvas.addEventListener('click', (e)=>{
 });
 
 /* ======= Save attempt & history ======= */
+saveAttemptBtn.addEventListener('click', ()=>{
+  if(!currentAttempt) return;
+  if(attemptCount >= maxAttempts){
+    setResult("<span class='warning'>⚠️ Maximum attempts reached.</span>");
+    saveAttemptBtn.style.display='none';
+    return;
+  }
   savedAttempts.push(currentAttempt);
   const idx = savedAttempts.length - 1;
   // redraw saved attempt overlay in color
@@ -764,7 +771,7 @@ canvas.addEventListener('click', (e)=>{
   left.innerHTML = `<div><strong>Attempt ${idx+1}</strong>: ${currentAttempt.angle}°</div><div style="font-size:0.95rem;margin-top:6px;color:#555">${currentAttempt.remarkText}</div>`;
   const tag = document.createElement('div');
   tag.className = 'historyTag';
-  tag.textContent = currentAttempt.remarkText.includes('Your') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
+  tag.textContent = currentAttempt.remarkText.includes('Posture') ? 'Good' : (currentAttempt.remarkText.includes('Mild') ? 'At risk' : 'Poor');
   // color tag
   if(currentAttempt.remarkClass === 'good') tag.style.background = '#e8f5e9', tag.style.color = '#2e7d32';
   else if(currentAttempt.remarkClass === 'atrisk') tag.style.background = '#fff8e1', tag.style.color = '#ff9800';
