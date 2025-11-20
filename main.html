@@ -783,19 +783,7 @@ canvas.addEventListener('click', (e)=>{
   drawCanvas();
   angleValDiv.textContent = '';
   remarkDiv.textContent = '';
-
-
-/* ======= Compute average for current image ======= */
-function computeAverage(){
-  if(savedAttempts.length === 0) return;
-  const sum = savedAttempts.reduce((acc,o)=>acc+o.angle,0);
-  const avg = (sum/savedAttempts.length).toFixed(2);
-  let label='';
-  if(avg >= 55) label='Good posture';
-  else if(avg >= 45) label='At risk';
-  else label='Poor posture';
-  setResult(`<b>Average CVA: ${avg}°</b> — ${label}`);
-}
+});
 
 /* ======= Reset Points (keeps image+overlay+saved attempts) ======= */
 resetPointsBtn.addEventListener('click', ()=>{
@@ -935,4 +923,5 @@ window.addEventListener('beforeunload', ()=>{ if(stream) stream.getTracks().forE
   
 </body>
 </html>
+
 
